@@ -1,1 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+  margin: auto;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #7bd4c5;
+  width: 80%;
+}
+
+div .mat-slider{
+  top: 2px;
+  width: 100%;
+}
+.filter-container .mat-slider{
+  min-width: 250px;
+}
+
+.number-of-parts-filter .mat-form-field-underline{
+  background-color: transparent;
+}
+
+
+ mat-chip,button.form-button {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0 rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  text-align: center;
+  height: 30px;
+  margin: 5px;
+  width: 45%;
+  color: white!important;
+  line-height: 28px;
+   cursor: pointer;
+   font-family: Roboto,Helvetica Neue,sans-serif;
+   border: none;
+   font-weight: 500;
+}
+ form button.open-button[disabled]{
+   background: lightgreen;
+   cursor: default;
+ }
+.open-button {
+   background: linear-gradient(#26a60a, green);
+ }
+
+.delete-button {
+   background: linear-gradient(rgba(255, 0, 39, 0.7), rgba(255, 0, 39, 0.87));
+ }
+
+.cancel-button {
+  background: linear-gradient(#666, #888);
+}

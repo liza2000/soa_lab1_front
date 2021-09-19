@@ -1,0 +1,101 @@
+.mat-card.top{
+  margin: 2em 5px;
+  display: flex;
+}
+
+
+.container {
+  margin: auto;
+  display: flex;
+  & > * {
+    margin: 0 5px;
+  }
+
+
+
+  .filter-container {
+    width: 25%;
+
+    mat-datepicker-toggle, mat-icon {
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    mat-icon{
+      height: 27px;
+      vertical-align: bottom;
+    }
+
+
+    & > * {
+      display: block;
+    }
+
+    span {
+      color: #787763;
+    }
+
+    .coordinates, .number-filters {
+      & > div {
+        display: flex;
+
+        & > * {
+          margin: 0 5px;
+          width: 45%;
+        }
+      }
+    }
+  }
+
+}
+.table-container {
+  width: 75%;
+
+  th {
+    min-width: max-content;
+    font-size: 1em;
+  &.position-column {
+    width: 5%;
+  }
+
+  &.name-column {
+    width: 10%;
+  }
+
+  &.coordinate-column {
+    width: 3%;
+  }
+    &.date-column{
+      width: 10%;
+    }
+    &.type-column{
+      width: 10%;
+    }
+    &.capacity-column{
+      width: 5%
+    }
+    &.engine-power-column{
+      width: 10%;
+    }
+  &.button-column {
+    width: 20%;
+  }
+}
+
+
+  td{
+    display: table-cell;
+    vertical-align: middle;
+
+    .cell-content{
+    margin:  auto;
+    height: 100%;
+  }
+    .button-container{
+      display: flex;
+
+    }
+
+  }
+}
+
+

@@ -1,0 +1,214 @@
+<mat-card class="top">
+  <mat-chip class="open-button" (click)="openHumanBeingForm()">Create</mat-chip>
+</mat-card>
+
+<div  class="container">
+<mat-card class="filter-container">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+      <input [(ngModel)]="name" matInput (change)="getHumans()">
+  </mat-form-field>
+  <span>Coordinates</span>
+  <div class="coordinates">
+    <div>
+      <span>X: </span>
+      <mat-form-field >
+        <mat-label>From</mat-label>
+        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="xStart" matInput (change)="xStart = helper.setNum(FLOAT_MAX,xStart);getHumans()">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>To:</mat-label>
+        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="xEnd" matInput (change)="xEnd = helper.setNum(FLOAT_MAX,xEnd); getHumans()">
+      </mat-form-field>
+    </div>
+    <div>
+      <span>Y: </span>
+      <mat-form-field>
+        <mat-label>From:</mat-label>
+        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yStart" matInput (change)="yStart = helper.setNum(FLOAT_MAX,yStart); getHumans()">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>To:</mat-label>
+        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yEnd" matInput (change)="yEnd = helper.setNum(FLOAT_MAX,yEnd); getHumans()">
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-form-field>
+  <mat-label>Date</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input #startDate (focus)="startDate.blur()" matStartDate [(ngModel)]="dateStart">
+      <input #endDate (focus)="endDate.blur()" matEndDate [(ngModel)]="dateEnd">
+    </mat-date-range-input>
+    <mat-icon matSuffix *ngIf="dateStart||dateEnd" (click)="dateStart=null;dateEnd=null;getHumans()">clear</mat-icon>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker (closed)="getHumans()"></mat-date-range-picker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Real hero</mat-label>
+    <mat-select   [(ngModel)]="realHero" (selectionChange)="getHumans()">
+      <mat-option  value="true">Yes</mat-option>
+      <mat-option  value="false">No</mat-option>
+      <mat-option value="">Not selected</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Has toothpick</mat-label>
+    <mat-select  [(ngModel)]="hasToothpick" (selectionChange)="getHumans()">
+      <mat-option  value="true">Yes</mat-option>
+      <mat-option  value="false">No</mat-option>
+      <mat-option value="">Not selected</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Weapon type</mat-label>
+    <mat-select [(ngModel)]="weaponTypes" multiple (selectionChange)="getHumans()">
+      <mat-option  [value]="i" *ngFor="let i of getWeaponType()" >
+        {{i}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="number-filters">
+    <span>Impact speed: </span>
+    <div>
+      <mat-form-field >
+        <mat-label>From</mat-label>
+        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedStart" matInput (change)="impactSpeedStart = helper.setNum(FLOAT_MAX,impactSpeedStart); getHumans()">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>To:</mat-label>
+        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedEnd" matInput (change)=" impactSpeedEnd = helper.setNum(FLOAT_MAX,impactSpeedEnd); getHumans()">
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Soundtrack name</mat-label>
+      <input [(ngModel)]="soundtrackName" matInput (change)="getHumans()">
+    </mat-form-field>
+
+    <div class="number-filters">
+      <span>Minutes of waiting: </span>
+      <div>
+        <mat-form-field>
+          <mat-label>From:</mat-label>
+          <input type="number" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingStart" matInput (change)="minutesOfWaitingStart = helper.setNum(DOUBLE_MAX,minutesOfWaitingStart); getHumans()">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>To:</mat-label>
+          <input type="number" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingEnd" matInput (change)="minutesOfWaitingEnd = helper.setNum(DOUBLE_MAX,minutesOfWaitingEnd); getHumans()">
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+  <mat-form-field>
+    <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="weaponTypes" multiple (selectionChange)="getHumans()">
+      <mat-option  [value]="i" *ngFor="let i of getWeaponType()" >
+        {{i}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Car</mat-label>
+    <input [(ngModel)]="car" matInput (change)="getHumans()">
+  </mat-form-field>
+</mat-card>
+<mat-card class="table-container">
+<table matSort (matSortChange)="setSortData($event)" mat-table [dataSource]="humans">
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columns"></tr>
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="position-column">№</th>
+      <td mat-cell *matCellDef="let i = index">
+        <div class="cell-content">{{i+1+limit*pageIndex}}</div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th  mat-sort-header mat-header-cell *matHeaderCellDef class="name-column">Name</th>
+      <td mat-cell *matCellDef="let human"><div class="cell-content">{{human.name}}</div></td>
+    </ng-container>
+    <ng-container matColumnDef="coordinatesX">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef class="coordinate-column">X</th>
+      <td mat-cell *matCellDef="let human">
+        <div class="cell-content">{{human.coordinates.x}}</div>
+      </td>
+    </ng-container>
+  <ng-container matColumnDef="coordinatesY">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="coordinate-column">Y</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.coordinates.y}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="creationDate">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="date-column">Creation Date</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{helper.format(human.creationDate)}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="realHero">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="realHero-column">Real hero</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{helper.format(human.realHero)}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="hasToothpick">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="hasToothpick-column">Has toothpick</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{helper.format(human.hasToothpick)}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="impactSpeed">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="impactSpeed-column">Impact speed</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.impactSpeed}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="soundtrackName">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="soundtrackName-column">Soundtrack</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.soundtrackName}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="minutesOfWaiting">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="minutesOfWaiting-column">Minutes of waiting</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.minutesOfWaiting}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="weaponType">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="weaponType-column">Weapon type</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.weaponType.toString()[0] + human.weaponType.toString().substr(1).toLowerCase()}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="carName">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef class="carName-column">Car</th>
+    <td mat-cell *matCellDef="let human">
+      <div class="cell-content">{{human.car.name}}</div>
+    </td>
+  </ng-container>
+   <ng-container matColumnDef="buttons">
+     <th mat-header-cell *matHeaderCellDef class="button-column"></th>
+     <td mat-cell *matCellDef="let human">
+       <div class="button-container cell-content">
+         <mat-chip class="open-button" (click)="openHumanBeingForm(human)">
+           Open
+         </mat-chip>
+         <mat-chip class="delete-button" (click)="deleteHumanBeing(human)">
+           Delete
+         </mat-chip>
+       </div>
+     </td>
+   </ng-container>
+  </table>
+  <mat-paginator
+          [length]="length"
+          [pageIndex]="pageIndex"
+          [pageSize]="limit"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="false"
+          (page)="setPageOptions($event)">
+
+  </mat-paginator>
+</mat-card>
+</div>
