@@ -15,7 +15,7 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 })
 export class TableComponent implements OnInit {
   humans: HumanBeing[] = [];
-  columns = ['position','name', 'coordinatesX','coordinatesY','creationDate','realHero','hasToothpick','impactSpeed','soundtrackName','minutesOfWaiting','weaponType', 'carName'];
+  columns = ['position','name', 'coordinatesX','coordinatesY','creationDate','realHero','hasToothpick','impactSpeed','soundtrackName','minutesOfWaiting','weaponType', 'carName', 'buttons'];
   FLOAT_MAX=AppComponent.FLOAT_MAX;
   DOUBLE_MAX=AppComponent.DOUBLE_MAX;
   name?: string;
@@ -73,26 +73,31 @@ export class TableComponent implements OnInit {
         minutesOfWaiting: this.getFilterParameter(this.minutesOfWaitingStart,this.minutesOfWaitingEnd),
         weaponType: this.weaponTypes,
         realHero: this.getFilterParameter(this.realHero, this.realHero),
-        hasToothpick: this.getFilterParameter(this.hasToothpick),
+        hasToothpick: this.getFilterParameter(this.hasToothpick, this.hasToothpick),
         soundtrackName: (!this.soundtrackName||this.soundtrackName==='')?[]:this.soundtrackName,
         carName: (!this.car||this.car==='')?[]:this.car,
         limit: this.limit,
-        offset: this.pageIndex * this.limit
+        pageIndex: this.pageIndex
     };
     this.api.getHumanBeings(data).subscribe(v => {
       console.log(v);
        this.humans = v.list as HumanBeing[];
-       this.length = v.length
-    });
+       this.length = v.totalItems;
+       this.pageIndex = v.pageIndex;
+       this.limit = v.pageSize;
+    },
+      e => this.snackBar.open(e.error, 'Error', {duration: 5000}));
   }
   openHumanBeingForm(vehicle?: HumanBeing) {
-    this.dialog.open(HumanFormComponent, {data: vehicle}).afterClosed().subscribe(v => {if (v) this.getHumans();}
+    this.dialog.open(HumanFormComponent, {data: vehicle}).afterClosed().subscribe(v => {
+      if (v) this.getHumans()}
     )
   }
   deleteHumanBeing(band: HumanBeing) {
     return this.api.deleteHumanBeing(band.id).subscribe( v => {
       this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr"});
-      this.getHumans()})
+      this.getHumans()}, error => {
+      this.snackBar.open(error.error, 'Error', {duration: 5000})})
   }
 
 

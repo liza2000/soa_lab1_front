@@ -10,8 +10,8 @@
   </mat-form-field>
   <span>Coordinates</span>
   <div class="coordinates">
+    <span>X: </span>
     <div>
-      <span>X: </span>
       <mat-form-field >
         <mat-label>From</mat-label>
         <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="xStart" matInput (change)="xStart = helper.setNum(FLOAT_MAX,xStart);getHumans()">
@@ -21,8 +21,8 @@
         <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="xEnd" matInput (change)="xEnd = helper.setNum(FLOAT_MAX,xEnd); getHumans()">
       </mat-form-field>
     </div>
+    <span>Y: </span>
     <div>
-      <span>Y: </span>
       <mat-form-field>
         <mat-label>From:</mat-label>
         <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yStart" matInput (change)="yStart = helper.setNum(FLOAT_MAX,yStart); getHumans()">
@@ -48,7 +48,7 @@
     <mat-select   [(ngModel)]="realHero" (selectionChange)="getHumans()">
       <mat-option  value="true">Yes</mat-option>
       <mat-option  value="false">No</mat-option>
-      <mat-option value="">Not selected</mat-option>
+      <mat-option [value]="null">Not selected</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
@@ -56,7 +56,7 @@
     <mat-select  [(ngModel)]="hasToothpick" (selectionChange)="getHumans()">
       <mat-option  value="true">Yes</mat-option>
       <mat-option  value="false">No</mat-option>
-      <mat-option value="">Not selected</mat-option>
+      <mat-option [value]="null">Not selected</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
@@ -79,6 +79,7 @@
         <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedEnd" matInput (change)=" impactSpeedEnd = helper.setNum(FLOAT_MAX,impactSpeedEnd); getHumans()">
       </mat-form-field>
     </div>
+  </div>
     <mat-form-field>
       <mat-label>Soundtrack name</mat-label>
       <input [(ngModel)]="soundtrackName" matInput (change)="getHumans()">
@@ -96,17 +97,7 @@
           <input type="number" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingEnd" matInput (change)="minutesOfWaitingEnd = helper.setNum(DOUBLE_MAX,minutesOfWaitingEnd); getHumans()">
         </mat-form-field>
       </div>
-    </div>
-
   </div>
-  <mat-form-field>
-    <mat-label>Type</mat-label>
-    <mat-select [(ngModel)]="weaponTypes" multiple (selectionChange)="getHumans()">
-      <mat-option  [value]="i" *ngFor="let i of getWeaponType()" >
-        {{i}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
   <mat-form-field>
     <mat-label>Car</mat-label>
     <input [(ngModel)]="car" matInput (change)="getHumans()">
@@ -148,13 +139,13 @@
   <ng-container matColumnDef="realHero">
     <th mat-sort-header mat-header-cell *matHeaderCellDef class="realHero-column">Real hero</th>
     <td mat-cell *matCellDef="let human">
-      <div class="cell-content">{{helper.format(human.realHero)}}</div>
+      <div class="cell-content">{{human.realHero?'Yes':'No'}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="hasToothpick">
     <th mat-sort-header mat-header-cell *matHeaderCellDef class="hasToothpick-column">Has toothpick</th>
     <td mat-cell *matCellDef="let human">
-      <div class="cell-content">{{helper.format(human.hasToothpick)}}</div>
+      <div class="cell-content">{{human.hasToothpick?'Yes':'No'}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="impactSpeed">
@@ -191,17 +182,13 @@
      <th mat-header-cell *matHeaderCellDef class="button-column"></th>
      <td mat-cell *matCellDef="let human">
        <div class="button-container cell-content">
-         <mat-chip class="open-button" (click)="openHumanBeingForm(human)">
-           Open
-         </mat-chip>
-         <mat-chip class="delete-button" (click)="deleteHumanBeing(human)">
-           Delete
-         </mat-chip>
+         <mat-icon  (click)="openHumanBeingForm(human)">edit</mat-icon>
+         <mat-icon (click)="deleteHumanBeing(human)">delete</mat-icon>
        </div>
      </td>
    </ng-container>
   </table>
-  <mat-paginator
+  <mat-paginator *ngIf="length>0"
           [length]="length"
           [pageIndex]="pageIndex"
           [pageSize]="limit"

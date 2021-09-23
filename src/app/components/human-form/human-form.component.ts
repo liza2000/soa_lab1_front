@@ -89,11 +89,11 @@ export class HumanFormComponent implements OnInit {
     };
     if (!this.human)
       this.api.saveHumanBeing(data).subscribe(value => this.result = value, error => {
-        this.snackBar.open(error.message, 'Error:', {duration: 5000})
+        this.snackBar.open(error.error, 'Error:', {duration: 5000})
       });
     else
-      this.api.updateHumanBeing(this.human.id,data).subscribe(value => this.result = value, error => {
-        this.snackBar.open(error.message, 'Error', {duration: 5000})
+      this.api.updateHumanBeing(this.human.id,data).subscribe(value => this.close(value), error => {
+        this.snackBar.open(error.error, 'Error', {duration: 5000})
       });
   }
 

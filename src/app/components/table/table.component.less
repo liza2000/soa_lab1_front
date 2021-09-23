@@ -14,7 +14,7 @@
 
 
   .filter-container {
-    width: 25%;
+    width: 15%;
 
     mat-datepicker-toggle, mat-icon {
       font-size: 1.5em;
@@ -48,11 +48,11 @@
 
 }
 .table-container {
-  width: 75%;
+  width: 85%;
 
   th {
     min-width: max-content;
-    font-size: 1em;
+    font-size: 0.8rem;
   &.position-column {
     width: 5%;
   }
@@ -67,13 +67,23 @@
     &.date-column{
       width: 10%;
     }
-    &.type-column{
-      width: 10%;
-    }
+
     &.capacity-column{
       width: 5%
     }
     &.engine-power-column{
+      width: 10%;
+    }
+    &.impactSpeed-column, &.minutesOfWaiting-column{
+      width: 10%;
+    }
+    &.realHero-column, &.hasToothpick-column{
+      width: 5%;
+    }
+    &.weaponType-column{
+        width: 10%;
+      }
+    &.carName-column, &.soundtrackName-column{
       width: 10%;
     }
   &.button-column {
@@ -92,7 +102,10 @@
   }
     .button-container{
       display: flex;
-
+      * {
+        cursor: pointer;
+        margin: auto;
+      }
     }
 
   }

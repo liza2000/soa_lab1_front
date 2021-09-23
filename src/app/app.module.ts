@@ -24,8 +24,9 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule, MatDialogRef} fr
 import {ApiService} from "./services/api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from "@angular/material/checkbox";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
+import {CdkTableModule} from "@angular/cdk/table";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/materia
     HttpClientModule,
     NgxMatRangeSliderModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CdkTableModule
   ],
   exports:[],
   entryComponents: [HumanFormComponent],
@@ -62,7 +64,7 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/materia
     {provide: ApiService, useClass: ApiService},
     {provide: DateAdapter, useClass: MyDateAdapter},
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    {provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: {clickAction: "check"}  as MatCheckboxDefaultOptions}
   ],
   bootstrap: [AppComponent]
 })
