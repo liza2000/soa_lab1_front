@@ -27,12 +27,15 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from "@angular/material/checkbox";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {CdkTableModule} from "@angular/cdk/table";
+import { ParameterFormComponent } from './components/parameter-form/parameter-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
-    HumanFormComponent
+    ParameterFormComponent,
+    HumanFormComponent,
+    ParameterFormComponent
   ],
   imports: [
     BrowserModule,

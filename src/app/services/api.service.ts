@@ -33,7 +33,21 @@ export class ApiService {
     return this.http.get(this.path,{headers: ApiService.getHeaders(), params:data});
   }
 
+  getById(id: number): Observable<HumanBeing>{
+    return this.http.get<HumanBeing>(this.path+id, {headers: ApiService.getHeaders()})
+  }
+
   public deleteHumanBeing(id: number): Observable<any>{
     return this.http.delete(this.path + id,{headers: ApiService.getHeaders()})
+  }
+
+  public getHumanBeingsBySoundtrackNameStarts(soundtrackName: string):Observable<HumanBeing[]>{
+   return  this.http.get<HumanBeing[]>(this.path+'soundtrackNameStarts',{headers: ApiService.getHeaders(), params:{soundtrackName: soundtrackName}})
+  }
+  public getCountByWeaponTypeLess(weaponType: WeaponType){
+   return  this.http.get(this.path+'weaponTypeLess',{headers: ApiService.getHeaders(), params:{weaponType: weaponType.toString().toUpperCase()}})
+  }
+  public deleteAllByMinutesOFWaiting(minutesOfWaiting: number): Observable<any>{
+    return this.http.delete(this.path,{headers: ApiService.getHeaders(), params:{minutesOfWaiting: minutesOfWaiting}})
   }
 }

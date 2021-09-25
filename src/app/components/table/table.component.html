@@ -1,5 +1,9 @@
 <mat-card class="top">
-  <mat-chip class="open-button" (click)="openHumanBeingForm()">Create</mat-chip>
+  <mat-chip class="get-button" (click)="openForResult(getRequestType().GET_BY_ID)">Get by id</mat-chip>
+  <mat-chip class="open-button" (click)="openHumanBeingForm()">Create human being</mat-chip>
+  <mat-chip class="get-button" (click)="openForResult(getRequestType().GET_COUNT_WEAPON_TYPE_LESS)">Get count by weapon type less</mat-chip>
+  <mat-chip class="delete-button" (click)="openForResult(getRequestType().DELETE_ALL_BY_MOW)">Delete all by minutes of waiting</mat-chip>
+  <mat-chip class="get-button" (click)="openForResult(getRequestType().GET_BY_SOUNDTRACK_NAME_STARTS)">Get all by soundtrack name starts</mat-chip>
 </mat-card>
 
 <div  class="container">

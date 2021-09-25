@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Car, Coordinates, HumanBeing, WeaponType} from "../../model/humanBeing";
+import {Car, Coordinates, HumanBeing, RequestType, WeaponType} from "../../model/humanBeing";
 import {HelperService} from "../../services/utils/helper.service";
 import {MatDialog} from "@angular/material/dialog";
 import {HumanFormComponent} from "../human-form/human-form.component";
@@ -7,12 +7,15 @@ import {ApiService} from "../../services/api.service";
 import {PageEvent} from "@angular/material/paginator";
 import {AppComponent} from "../../app.component";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {ParameterFormComponent} from "../parameter-form/parameter-form.component";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.less']
 })
+
+
 export class TableComponent implements OnInit {
   humans: HumanBeing[] = [];
   columns = ['position','name', 'coordinatesX','coordinatesY','creationDate','realHero','hasToothpick','impactSpeed','soundtrackName','minutesOfWaiting','weaponType', 'carName', 'buttons'];
@@ -86,18 +89,27 @@ export class TableComponent implements OnInit {
        this.pageIndex = v.pageIndex;
        this.limit = v.pageSize;
     },
-      e => this.snackBar.open(e.error, 'Error', {duration: 5000}));
+      e => {
+      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
   }
-  openHumanBeingForm(vehicle?: HumanBeing) {
-    this.dialog.open(HumanFormComponent, {data: vehicle}).afterClosed().subscribe(v => {
+  openHumanBeingForm(human?: HumanBeing) {
+    this.dialog.open(HumanFormComponent, {data: human }).afterClosed().subscribe(v => {
       if (v) this.getHumans()}
     )
   }
+
+  openForResult(request: RequestType) {
+    this.dialog.open(ParameterFormComponent, {data: request}).afterClosed().subscribe(v => {
+      if (v) this.getHumans()}
+    );
+  }
+
+
   deleteHumanBeing(band: HumanBeing) {
     return this.api.deleteHumanBeing(band.id).subscribe( v => {
-      this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr"});
+      this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr", panelClass: 'success-snackbar'});
       this.getHumans()}, error => {
-      this.snackBar.open(error.error, 'Error', {duration: 5000})})
+      this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})})
   }
 
 
@@ -114,6 +126,9 @@ export class TableComponent implements OnInit {
 
   getWeaponType(): string[]{
     return Object.keys(WeaponType)
+  }
+  getRequestType(){
+    return RequestType
   }
 
 

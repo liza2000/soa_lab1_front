@@ -1,0 +1,114 @@
+<div  *ngIf="request == getRequestType().GET_BY_ID">
+<form *ngIf="!result">
+  <h1>Get by id</h1>
+  <mat-form-field>
+    <mat-label>ID</mat-label>
+    <input matInput type="number" [formControl]="id">
+    <mat-error *ngIf="id.hasError('required')">Please, type id</mat-error>
+    <mat-error *ngIf="id.hasError('type')">Id should be a number</mat-error>
+    <mat-error *ngIf="id.hasError('min')|| id.hasError('max')">Id should be from 1 to 9223372036854775807</mat-error>
+  </mat-form-field>
+  <div>
+    <button class="open-button form-button" [disabled]="id.invalid" (click)="getById()">Get</button>
+    <button class="cancel-button form-button" (click)="close()">Cancel</button>
+  </div>
+</form>
+  <div class="result" *ngIf="result">
+    <h1>Human being</h1>
+    <p>Id: <strong>{{result?.id}}</strong></p>
+    <p>Name: <strong>{{result?.name}}</strong></p>
+    <span>Coordinates</span>
+    <div class="half">
+      <p>X: <strong>{{result?.coordinates?.x}}</strong></p>
+      <p>Y: <strong>{{result?.coordinates?.y}}</strong></p>
+    </div>
+    <p>Creation date:<strong> {{helper.format(result?.creationDate)}}</strong></p>
+    <p>Real hero: <strong>{{result?.realHero?'Yes':'No'}}</strong></p>
+    <p>Has Toothpick: <strong>{{result?.hasToothpick?'Yes':'No'}}</strong></p>
+    <p>Impact speed: <strong>{{result?.impactSpeed}}</strong></p>
+    <p>Soundtrack name: <strong>{{result?.soundtrackName}}</strong></p>
+    <p>Minutes of waiting: <strong>{{result?.minutesOfWaiting}}</strong></p>
+    <p>Weapon type: <strong>{{result?.weaponType?.toString()?.toLowerCase()}}</strong></p>
+    <p>Car name: <strong>{{result?.car?.name}}</strong></p>
+    <button class="open-button form-button" (click)="this.close()">Ok</button>
+  </div>
+</div>
+<div  *ngIf="request == getRequestType().GET_BY_SOUNDTRACK_NAME_STARTS">
+<form *ngIf="!results">
+  <h1>Get all by soundtrack name starts</h1>
+  <mat-form-field>
+    <mat-label>Soundtrack name</mat-label>
+    <input matInput [formControl]="soundtrackName">
+    <mat-error *ngIf="soundtrackName.invalid">Please, type soundtrack name</mat-error>
+  </mat-form-field>
+  <div>
+    <button class="open-button form-button" [disabled]="soundtrackName.invalid" (click)="getHumanBeingsBySoundtrackNameStarts()">Get</button>
+    <button class="cancel-button form-button" (click)="close()">Cancel</button>
+  </div>
+</form>
+  <div class="result"  *ngIf="results">
+    <h1 *ngIf="results.length>0">Human beings whose soundtrack name starts with {{soundtrackName.value}}</h1>
+    <p *ngIf="results.length==0">No humans with soundtrack name starts with {{soundtrackName.value}}</p>
+    <div class="human-array" *ngIf="results.length>0">
+    <div *ngFor="let human of results">
+    <h3>Human being</h3>
+      <p>Id: <strong>{{human?.id}}</strong></p>
+      <p>Name: <strong>{{human?.name}}</strong></p>
+    <span>Coordinates</span>
+    <div class="half">
+      <p>X: <strong>{{human?.coordinates?.x}}</strong></p>
+      <p>Y: <strong>{{human?.coordinates?.y}}</strong></p>
+    </div>
+      <p>Creation date: <strong>{{helper.format(human?.creationDate)}}</strong></p>
+      <p>Real hero: <strong>{{human?.realHero?'Yes':'No'}}</strong></p>
+      <p>Has Toothpick: <strong>{{human?.hasToothpick?'Yes':'No'}}</strong></p>
+      <p>Impact speed: <strong>{{human?.impactSpeed}}</strong></p>
+      <p>Soundtrack name: <strong>{{human?.soundtrackName}}</strong></p>
+      <p>Minutes of waiting: <strong>{{human?.minutesOfWaiting}}</strong></p>
+      <p>Weapon type: <strong>{{human?.weaponType?.toString()?.toLowerCase()}}</strong></p>
+      <p>Car name: <strong>{{human?.car?.name}}</strong></p>
+    </div>
+    </div>
+    <button class="open-button form-button" (click)="this.close()">Ok</button>
+  </div>
+</div>
+<div *ngIf="request == getRequestType().DELETE_ALL_BY_MOW">
+<form >
+<h1>Delete all by minutes of waiting</h1>
+  <mat-form-field>
+    <mat-label>Minutes of waiting</mat-label>
+    <input matInput type="number"  [formControl]="minutesOfWaiting">
+    <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting</mat-error>
+    <mat-error *ngIf="minutesOfWaiting.hasError('type')">Minutes of waiting should be a number</mat-error>
+    <mat-error *ngIf="minutesOfWaiting.hasError('min') || minutesOfWaiting.hasError('max')">Minutes of waiting should be from -1.797e+308 to 1.797e+308</mat-error>
+  </mat-form-field>
+  <div>
+    <button class="delete-button form-button" [disabled]="minutesOfWaiting.invalid" (click)="deleteAllByMinutesOFWaiting()">Delete</button>
+    <button class="cancel-button form-button" (click)="close()">Cancel</button>
+  </div>
+</form>
+</div>
+<div *ngIf="request == getRequestType().GET_COUNT_WEAPON_TYPE_LESS">
+<form *ngIf="!result">
+  <h1>Get count by weapon type less</h1>
+  <mat-form-field>
+    <mat-label >Weapon type</mat-label>
+    <mat-select [formControl]="weaponType">
+      <mat-option [value]="i" *ngFor="let i of getWeaponType()">
+        {{i}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="weaponType.invalid">Please, select weapon type</mat-error>
+  </mat-form-field>
+  <div>
+    <button class="open-button form-button" [disabled]="weaponType.invalid" (click)="getCountByWeaponTypeLess()">Get</button>
+    <button class="cancel-button form-button" (click)="close()">Cancel</button>
+  </div>
+</form>
+  <div class="result" *ngIf="result!=undefined">
+    <h1>Result</h1>
+    <p>Count of humans with weaponType less then {{weaponType.value.toString().toLowerCase()}} is {{result}}</p>
+    <button class="open-button form-button" (click)="this.close()">Ok</button>
+  </div>
+</div>
+

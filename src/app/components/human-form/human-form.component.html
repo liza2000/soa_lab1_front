@@ -47,7 +47,7 @@
     <input matInput type="number"  [formControl]="minutesOfWaiting">
     <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting</mat-error>
     <mat-error *ngIf="minutesOfWaiting.hasError('type')">Minutes of waiting should be a number</mat-error>
-    <mat-error *ngIf="minutesOfWaiting.hasError('min') || minutesOfWaiting.hasError('max')">Impact speed should be from -1.797e+308 to 1.797e+308</mat-error>
+    <mat-error *ngIf="minutesOfWaiting.hasError('min') || minutesOfWaiting.hasError('max')">Minutes of waiting should be from -1.797e+308 to 1.797e+308</mat-error>
   </mat-form-field>
     <mat-form-field>
       <mat-label>Weapon type</mat-label>
@@ -56,7 +56,7 @@
           {{i}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="impactSpeed.invalid">Please, select weapon type</mat-error>
+      <mat-error *ngIf="weaponType.invalid">Please, select weapon type</mat-error>
     </mat-form-field>
   <div formGroupName="car">
   <mat-form-field>
@@ -72,21 +72,21 @@
 
 <div class="result" *ngIf="result">
   <h1>Human being with {{result?.name}} {{human?'updates':'created'}}</h1>
-  <p>Id: {{result?.id}}</p>
-  <p>Name: {{result?.name}}</p>
+  <p>Id: <strong>{{result?.id}}</strong></p>
+  <p>Name: <strong>{{result?.name}}</strong></p>
   <span>Coordinates</span>
   <div class="half">
-    <p>X: {{result?.coordinates?.x}}</p>
-    <p>Y: {{result?.coordinates?.y}}</p>
+    <p>X: <strong>{{result?.coordinates?.x}}</strong></p>
+    <p>Y: <strong>{{result?.coordinates?.y}}</strong></p>
   </div>
-  <p>Creation date: {{result?.creationDate}}</p>
-  <p>Real hero: {{result?.realHero?'Yes':'No'}}</p>
-  <p>Has Toothpick: {{result?.hasToothpick?'Yes':'No'}}</p>
-  <p>Impact speed: {{result?.impactSpeed}}</p>
-  <p>Soundtrack name: {{result?.soundtrackName}}</p>
-  <p>Minutes of waiting: {{result?.minutesOfWaiting}}</p>
-  <p>Weapon type: {{result?.weaponType}}</p>
-  <p>Car name: {{result?.car?.name}}</p>
+  <p>Creation date:<strong> {{helper.format(result?.creationDate)}}</strong></p>
+  <p>Real hero: <strong>{{result?.realHero?'Yes':'No'}}</strong></p>
+  <p>Has Toothpick: <strong>{{result?.hasToothpick?'Yes':'No'}}</strong></p>
+  <p>Impact speed: <strong>{{result?.impactSpeed}}</strong></p>
+  <p>Soundtrack name: <strong>{{result?.soundtrackName}}</strong></p>
+  <p>Minutes of waiting: <strong>{{result?.minutesOfWaiting}}</strong></p>
+  <p>Weapon type: <strong>{{result?.weaponType?.toString()?.toLowerCase()}}</strong></p>
+  <p>Car name: <strong>{{result?.car?.name}}</strong></p>
   <button class="open-button form-button" (click)="this.close(result)">Ok</button>
 </div>
 

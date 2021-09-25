@@ -30,4 +30,9 @@ export enum WeaponType{
   BAT = "BAT"
 }
 
-
+export enum RequestType{
+  GET_BY_ID,
+  DELETE_ALL_BY_MOW,
+  GET_COUNT_WEAPON_TYPE_LESS,
+  GET_BY_SOUNDTRACK_NAME_STARTS
+}

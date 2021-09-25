@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {AppComponent} from "../../app.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {HelperService} from "../../services/utils/helper.service";
 
 @Component({
   selector: 'app-human-dialog',
@@ -12,7 +13,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./human-form.component.less']
 })
 export class HumanFormComponent implements OnInit {
-//todo показывать результат апдейта
   human?: HumanBeing;
 
   result?: HumanBeing;
@@ -23,7 +23,7 @@ export class HumanFormComponent implements OnInit {
   realHero = false;
   hasToothpick = false;
   impactSpeed = new FormControl('', [Validators.required, Validators.min(-741), Validators.max(AppComponent.FLOAT_MAX)]);
-  soundtrackName = new FormControl('', Validators.required);
+  soundtrackName = new FormControl(null, Validators.required);
   minutesOfWaiting = new FormControl('', [Validators.required,Validators.min(-AppComponent.DOUBLE_MAX), Validators.max(AppComponent.DOUBLE_MAX)]);
   weaponType = new FormControl('', Validators.required);
   carName = new FormControl('');
@@ -31,6 +31,7 @@ export class HumanFormComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<HumanFormComponent>,
               public api:ApiService,
+              public helper: HelperService,
               public snackBar: MatSnackBar) {
     if (data)
       this.human = data;
@@ -80,7 +81,7 @@ export class HumanFormComponent implements OnInit {
       realHero: this.realHero,
       hasToothpick: this.hasToothpick,
       impactSpeed: this.impactSpeed.value,
-      soundtrackName:this.soundtrackName.value,
+      soundtrackName:  this.soundtrackName.value,
       minutesOfWaiting: this.minutesOfWaiting.value,
       weaponType: this.weaponType.value.toUpperCase().trim(),
       car: {
@@ -89,11 +90,14 @@ export class HumanFormComponent implements OnInit {
     };
     if (!this.human)
       this.api.saveHumanBeing(data).subscribe(value => this.result = value, error => {
-        this.snackBar.open(error.error, 'Error:', {duration: 5000})
+        this.snackBar.open(error.error, 'Error:', {duration: 5000, panelClass: 'error-snackbar'})
       });
     else
-      this.api.updateHumanBeing(this.human.id,data).subscribe(value => this.close(value), error => {
-        this.snackBar.open(error.error, 'Error', {duration: 5000})
+      this.api.updateHumanBeing(this.human.id,data).subscribe(value =>{
+        this.snackBar.open(value, 'Success', {duration: 5000, panelClass: 'success-snackbar'});
+        this.close(value)
+      }, error => {
+        this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})
       });
   }
 
