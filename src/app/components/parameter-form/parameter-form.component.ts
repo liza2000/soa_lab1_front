@@ -19,7 +19,7 @@ export class ParameterFormComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data:RequestType,
               public dialogRef: MatDialogRef<ParameterFormComponent>,
               public helper: HelperService,
-              public api:ApiService,
+              public api: ApiService,
               public snackBar: MatSnackBar) {
     if (data)
       this.request = data;

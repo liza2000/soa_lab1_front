@@ -26,7 +26,7 @@ export class HumanFormComponent implements OnInit {
   soundtrackName = new FormControl(null, Validators.required);
   minutesOfWaiting = new FormControl('', [Validators.required,Validators.min(-AppComponent.DOUBLE_MAX), Validators.max(AppComponent.DOUBLE_MAX)]);
   weaponType = new FormControl('', Validators.required);
-  carName = new FormControl('');
+  carName = new FormControl(null);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<HumanFormComponent>,
@@ -84,7 +84,7 @@ export class HumanFormComponent implements OnInit {
       soundtrackName:  this.soundtrackName.value,
       minutesOfWaiting: this.minutesOfWaiting.value,
       weaponType: this.weaponType.value.toUpperCase().trim(),
-      car: {
+      car: this.carName.value==null?null:{
         name:this.carName.value
       }
     };

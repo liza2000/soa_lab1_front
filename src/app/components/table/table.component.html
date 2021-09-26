@@ -179,7 +179,7 @@
   <ng-container matColumnDef="carName">
     <th mat-sort-header mat-header-cell *matHeaderCellDef class="carName-column">Car</th>
     <td mat-cell *matCellDef="let human">
-      <div class="cell-content">{{human.car.name}}</div>
+      <div class="cell-content">{{human.car?.name}}</div>
     </td>
   </ng-container>
    <ng-container matColumnDef="buttons">

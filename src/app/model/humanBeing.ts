@@ -10,7 +10,7 @@ export class HumanBeing {
               public soundtrackName:string,
               public minutesOfWaiting: number,
               public weaponType: WeaponType,
-              public car: Car) {
+              public car?: Car) {
   }
 
 }
