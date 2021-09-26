@@ -4,8 +4,7 @@
   <mat-form-field>
     <mat-label>ID</mat-label>
     <input matInput type="number" [formControl]="id">
-    <mat-error *ngIf="id.hasError('required')">Please, type id</mat-error>
-    <mat-error *ngIf="id.hasError('type')">Id should be a number</mat-error>
+    <mat-error *ngIf="id.hasError('required')">Please, type id with digits</mat-error>
     <mat-error *ngIf="id.hasError('min')|| id.hasError('max')">Id should be from 1 to 9223372036854775807</mat-error>
   </mat-form-field>
   <div>
@@ -78,8 +77,7 @@
   <mat-form-field>
     <mat-label>Minutes of waiting</mat-label>
     <input matInput type="number"  [formControl]="minutesOfWaiting">
-    <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting</mat-error>
-    <mat-error *ngIf="minutesOfWaiting.hasError('type')">Minutes of waiting should be a number</mat-error>
+    <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting with digits</mat-error>
     <mat-error *ngIf="minutesOfWaiting.hasError('min') || minutesOfWaiting.hasError('max')">Minutes of waiting should be from -1.797e+308 to 1.797e+308</mat-error>
   </mat-form-field>
   <div>
@@ -89,7 +87,7 @@
 </form>
 </div>
 <div *ngIf="request == getRequestType().GET_COUNT_WEAPON_TYPE_LESS">
-<form *ngIf="!result">
+<form *ngIf="result==undefined">
   <h1>Get count by weapon type less</h1>
   <mat-form-field>
     <mat-label >Weapon type</mat-label>

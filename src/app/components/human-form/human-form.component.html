@@ -10,15 +10,13 @@
   <mat-form-field>
     <mat-label>X:</mat-label>
     <input matInput type="number" [formControl]="x" >
-    <mat-error *ngIf="x.hasError('required')">Please, type x coordinate</mat-error>
-    <mat-error *ngIf="x.hasError('type')">Coordinate x should be a number</mat-error>
+    <mat-error *ngIf="x.hasError('required')">Please, type x coordinate with digits</mat-error>
     <mat-error *ngIf="x.hasError('min') || x.hasError('max')">Coordinate x should be from -706 to 3.40282347e+38</mat-error>
   </mat-form-field>
     <mat-form-field>
       <mat-label>Y:</mat-label>
       <input matInput type="number"  [formControl]="y">
-      <mat-error *ngIf="y.hasError('required')">Please, type y coordinate</mat-error>
-      <mat-error *ngIf="y.hasError('type')">Coordinate y should be a number</mat-error>
+      <mat-error *ngIf="y.hasError('required')">Please, type y coordinate with digits</mat-error>
       <mat-error *ngIf="y.hasError('min') || y.hasError('max')">Coordinate y should be from 3.40282347e+38 to 3.40282347e+38</mat-error>
     </mat-form-field>
   </div>
@@ -33,8 +31,7 @@
     <mat-form-field>
       <mat-label>Impact speed</mat-label>
       <input matInput type="number" [formControl]="impactSpeed">
-      <mat-error *ngIf="impactSpeed.hasError('required')">Please, type impact speed</mat-error>
-      <mat-error *ngIf="impactSpeed.hasError('type')">Impact speed should be a number</mat-error>
+      <mat-error *ngIf="impactSpeed.hasError('required')">Please, type impact speed with digits</mat-error>
       <mat-error *ngIf="impactSpeed.hasError('min') || impactSpeed.hasError('max')">Impact speed should be from -741 to 3.40282347e+38</mat-error>
     </mat-form-field>
   <mat-form-field>
@@ -45,8 +42,7 @@
   <mat-form-field>
     <mat-label>Minutes of waiting</mat-label>
     <input matInput type="number"  [formControl]="minutesOfWaiting">
-    <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting</mat-error>
-    <mat-error *ngIf="minutesOfWaiting.hasError('type')">Minutes of waiting should be a number</mat-error>
+    <mat-error *ngIf="minutesOfWaiting.hasError('required')">Please, type minutes of waiting with digits</mat-error>
     <mat-error *ngIf="minutesOfWaiting.hasError('min') || minutesOfWaiting.hasError('max')">Minutes of waiting should be from -1.797e+308 to 1.797e+308</mat-error>
   </mat-form-field>
     <mat-form-field>

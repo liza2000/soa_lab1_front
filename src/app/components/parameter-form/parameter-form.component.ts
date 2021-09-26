@@ -55,7 +55,7 @@ export class ParameterFormComponent implements OnInit {
 
   public getHumanBeingsBySoundtrackNameStarts(){
     if (this.soundtrackName.invalid) return;
-    this.api.getHumanBeingsBySoundtrackNameStarts(this.soundtrackName.value).subscribe(value => {console.log(value);this.results = value}, e => this.snackBar.open(e.error,'Error', {duration: 5000}))
+    this.api.getHumanBeingsBySoundtrackNameStarts(this.soundtrackName.value).subscribe(value => this.results = value, e => this.snackBar.open(e.error,'Error', {duration: 5000}))
   }
   public getCountByWeaponTypeLess(){
     if (this.weaponType.invalid) return;
@@ -65,9 +65,9 @@ export class ParameterFormComponent implements OnInit {
     if (this.minutesOfWaiting.invalid) return;
     this.api.deleteAllByMinutesOFWaiting(this.minutesOfWaiting.value).subscribe(value => {
 
-      this.snackBar.open(value,'Success', {panelClass: 'success-snackbar'});
+      this.snackBar.open(value,'Success', {panelClass: 'success-snackbar', duration: 5000});
       this.close(value)
       },
-        e => this.snackBar.open(e.error,'Error'))
+        e => this.snackBar.open(e.error,'Error', {duration: 5000}))
   }
 }

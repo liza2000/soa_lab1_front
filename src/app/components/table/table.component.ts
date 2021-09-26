@@ -71,7 +71,7 @@ export class TableComponent implements OnInit {
         name:(!this.name||this.name==='')?[]:this.name,
         coordinatesX:  this.getFilterParameter(this.xStart,this.xEnd),
         coordinatesY: this.getFilterParameter(this.yStart,this.yEnd),
-        date:this.getFilterParameter(this.helper.format(this.dateStart),this.helper.format(this.dateEnd)),
+        creationDate:this.getFilterParameter(this.helper.format(this.dateStart),this.helper.format(this.dateEnd)),
         impactSpeed:this.getFilterParameter(this.impactSpeedStart,this.impactSpeedEnd),
         minutesOfWaiting: this.getFilterParameter(this.minutesOfWaitingStart,this.minutesOfWaitingEnd),
         weaponType: this.weaponTypes,
@@ -83,7 +83,6 @@ export class TableComponent implements OnInit {
         pageIndex: this.pageIndex
     };
     this.api.getHumanBeings(data).subscribe(v => {
-      console.log(v);
        this.humans = v.list as HumanBeing[];
        this.length = v.totalItems;
        this.pageIndex = v.pageIndex;
@@ -115,11 +114,11 @@ export class TableComponent implements OnInit {
 
 
   setSortData(e: any) {
-    this.columnsToSort = this.columnsToSort.filter( s => s.slice(1)!==e.active);
+    this.columnsToSort = this.columnsToSort.filter( s => s.split('_',2)[1]!==e.active);
     if (e.direction==='') return;
     if (e.direction==='asc')
-      this.columnsToSort.push('a'+e.active);
-    else this.columnsToSort.push('d'+e.active);
+      this.columnsToSort.push('asc_'+e.active);
+    else this.columnsToSort.push('desc_'+e.active);
     this.getHumans()
   }
 
@@ -139,4 +138,8 @@ export class TableComponent implements OnInit {
   }
 
 
+  setNumFilter(input: HTMLInputElement,$event: KeyboardEvent, v?: number) {
+    if ($event.key != '.' && $event.key != ',')
+      input.value = v+''
+  }
 }

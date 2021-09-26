@@ -18,22 +18,22 @@
     <div>
       <mat-form-field >
         <mat-label>From</mat-label>
-        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="xStart" matInput (change)="xStart = helper.setNum(FLOAT_MAX,xStart);getHumans()">
+        <input type="number" #xSt (keyup)="setNumFilter(xSt,$event,xStart)"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="xStart" matInput (change)="xStart = helper.setNum(FLOAT_MAX,xStart);getHumans()">
       </mat-form-field>
       <mat-form-field>
         <mat-label>To:</mat-label>
-        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="xEnd" matInput (change)="xEnd = helper.setNum(FLOAT_MAX,xEnd); getHumans()">
+        <input type="number" #xEn (keyup)="setNumFilter(xEn,$event, xEnd)"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="xEnd" matInput (change)="xEnd = helper.setNum(FLOAT_MAX,xEnd); getHumans()">
       </mat-form-field>
     </div>
     <span>Y: </span>
     <div>
       <mat-form-field>
         <mat-label>From:</mat-label>
-        <input type="number"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yStart" matInput (change)="yStart = helper.setNum(FLOAT_MAX,yStart); getHumans()">
+        <input type="number" #ySt (keyup)="setNumFilter(ySt,$event,yStart)"  [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yStart" matInput (change)="yStart = helper.setNum(FLOAT_MAX,yStart); getHumans()">
       </mat-form-field>
       <mat-form-field>
         <mat-label>To:</mat-label>
-        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yEnd" matInput (change)="yEnd = helper.setNum(FLOAT_MAX,yEnd); getHumans()">
+        <input type="number" #yEn (keyup)="setNumFilter(yEn,$event,yEnd)" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX"  [(ngModel)]="yEnd" matInput (change)="yEnd = helper.setNum(FLOAT_MAX,yEnd); getHumans()">
       </mat-form-field>
     </div>
   </div>
@@ -76,11 +76,11 @@
     <div>
       <mat-form-field >
         <mat-label>From</mat-label>
-        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedStart" matInput (change)="impactSpeedStart = helper.setNum(FLOAT_MAX,impactSpeedStart); getHumans()">
+        <input type="number" #impSt (keyup)="setNumFilter(impSt,$event,impactSpeedStart)" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedStart" matInput (change)="impactSpeedStart = helper.setNum(FLOAT_MAX,impactSpeedStart); getHumans()">
       </mat-form-field>
       <mat-form-field>
         <mat-label>To:</mat-label>
-        <input type="number" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedEnd" matInput (change)=" impactSpeedEnd = helper.setNum(FLOAT_MAX,impactSpeedEnd); getHumans()">
+        <input type="number" #impEn (keyup)="setNumFilter(impEn,$event,impactSpeedEnd)" [min]="-FLOAT_MAX-1" [max]="FLOAT_MAX" [(ngModel)]="impactSpeedEnd" matInput (change)=" impactSpeedEnd = helper.setNum(FLOAT_MAX,impactSpeedEnd); getHumans()">
       </mat-form-field>
     </div>
   </div>
@@ -94,11 +94,11 @@
       <div>
         <mat-form-field>
           <mat-label>From:</mat-label>
-          <input type="number" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingStart" matInput (change)="minutesOfWaitingStart = helper.setNum(DOUBLE_MAX,minutesOfWaitingStart); getHumans()">
+          <input type="number" #minSt (keyup)="setNumFilter(minSt,$event,minutesOfWaitingStart)"  [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingStart" matInput (change)="minutesOfWaitingStart = helper.setNum(DOUBLE_MAX,minutesOfWaitingStart); getHumans()">
         </mat-form-field>
         <mat-form-field>
           <mat-label>To:</mat-label>
-          <input type="number" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingEnd" matInput (change)="minutesOfWaitingEnd = helper.setNum(DOUBLE_MAX,minutesOfWaitingEnd); getHumans()">
+          <input type="number" #minEn (keyup)="setNumFilter(minEn,$event,minutesOfWaitingEnd)" [min]="-DOUBLE_MAX" [max]="DOUBLE_MAX" [(ngModel)]="minutesOfWaitingEnd" matInput (change)="minutesOfWaitingEnd = helper.setNum(DOUBLE_MAX,minutesOfWaitingEnd); getHumans()">
         </mat-form-field>
       </div>
   </div>
