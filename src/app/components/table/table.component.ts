@@ -69,18 +69,18 @@ export class TableComponent implements OnInit {
     let data = {
         sort: this.columnsToSort.reverse(),
         name:(!this.name||this.name==='')?[]:this.name,
-        coordinatesX:  this.getFilterParameter(this.xStart,this.xEnd),
-        coordinatesY: this.getFilterParameter(this.yStart,this.yEnd),
-        creationDate:this.getFilterParameter(this.helper.format(this.dateStart),this.helper.format(this.dateEnd)),
-        impactSpeed:this.getFilterParameter(this.impactSpeedStart,this.impactSpeedEnd),
-        minutesOfWaiting: this.getFilterParameter(this.minutesOfWaitingStart,this.minutesOfWaitingEnd),
-        weaponType: this.weaponTypes,
-        realHero: this.getFilterParameter(this.realHero, this.realHero),
-        hasToothpick: this.getFilterParameter(this.hasToothpick, this.hasToothpick),
-        soundtrackName: (!this.soundtrackName||this.soundtrackName==='')?[]:this.soundtrackName,
-        carName: (!this.car||this.car==='')?[]:this.car,
+        coordinatesx:  this.getFilterParameter(this.xStart,this.xEnd),
+        coordinatesy: this.getFilterParameter(this.yStart,this.yEnd),
+        'creation-date':this.getFilterParameter(this.helper.format(this.dateStart),this.helper.format(this.dateEnd)),
+        'impact-speed':this.getFilterParameter(this.impactSpeedStart,this.impactSpeedEnd),
+        'minutes-of-waiting': this.getFilterParameter(this.minutesOfWaitingStart,this.minutesOfWaitingEnd),
+        'weapon-type': this.weaponTypes,
+        'real-hero': this.getFilterParameter(this.realHero, this.realHero),
+        'has-toothpick': this.getFilterParameter(this.hasToothpick, this.hasToothpick),
+        'soundtrack-name': (!this.soundtrackName||this.soundtrackName==='')?[]:this.soundtrackName,
+        'carname': (!this.car||this.car==='')?[]:this.car,
         limit: this.limit,
-        pageIndex: this.pageIndex
+        'page-index': this.pageIndex
     };
     this.api.getHumanBeings(data).subscribe(v => {
        this.humans = v.list as HumanBeing[];
