@@ -66,8 +66,9 @@ export class TableComponent implements OnInit {
     return [a,b];
   }
   getHumans() {
+    let  sort = this.columnsToSort.slice();
     let data = {
-        sort: this.columnsToSort.reverse(),
+        sort: sort.reverse(),
         name:(!this.name||this.name==='')?[]:this.name,
         coordinatesx:  this.getFilterParameter(this.xStart,this.xEnd),
         coordinatesy: this.getFilterParameter(this.yStart,this.yEnd),
