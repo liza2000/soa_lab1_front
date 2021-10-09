@@ -42,12 +42,12 @@ export class ApiService {
   }
 
   public getHumanBeingsBySoundtrackNameStarts(soundtrackName: string):Observable<HumanBeing[]>{
-   return  this.http.get<HumanBeing[]>(this.path+'soundtrackNameStarts',{headers: ApiService.getHeaders(), params:{soundtrackName: soundtrackName}})
+   return  this.http.get<HumanBeing[]>(this.path+'soundtrack-name-starts',{headers: ApiService.getHeaders(), params:{'soundtrack-name': soundtrackName}})
   }
   public getCountByWeaponTypeLess(weaponType: WeaponType){
-   return  this.http.get(this.path+'weaponTypeLess',{headers: ApiService.getHeaders(), params:{weaponType: weaponType.toString().toUpperCase()}})
+   return  this.http.get(this.path+'weapon-type-less',{headers: ApiService.getHeaders(), params:{'weapon-type': weaponType.toString().toUpperCase()}})
   }
   public deleteAllByMinutesOFWaiting(minutesOfWaiting: number): Observable<any>{
-    return this.http.delete(this.path,{headers: ApiService.getHeaders(), params:{minutesOfWaiting: minutesOfWaiting}})
+    return this.http.delete(this.path,{headers: ApiService.getHeaders(), params:{'minutes-of-waiting': minutesOfWaiting}})
   }
 }
