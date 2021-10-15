@@ -1,0 +1,30 @@
+<div class="button-container">
+  <h1>Teams</h1>
+  <mat-icon (click)="createTeam()">add</mat-icon>
+</div>
+<table  mat-table [dataSource]="teams">
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let myRowData; columns: columns"></tr>
+
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef class="position-column">№</th>
+    <td mat-cell *matCellDef="let i = index">
+      <div class="cell-content">{{i+1}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef class="name-column">Name</th>
+    <td mat-cell *matCellDef="let team">
+      {{team.name}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="buttons">
+    <th mat-header-cell *matHeaderCellDef class="button-column"></th>
+    <td mat-cell *matCellDef="let team">
+      <div class="button-container cell-content">
+        <mat-icon>edit</mat-icon>
+        <mat-icon (click)="deleteTeam()">delete</mat-icon>
+      </div>
+    </td>
+  </ng-container>
+</table>

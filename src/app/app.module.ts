@@ -21,13 +21,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxMatRangeSliderModule} from "ngx-mat-range-slider";
 import { HumanFormComponent } from './components/human-form/human-form.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {ApiService} from "./services/api.service";
+import {HumanApiService} from "./services/human-api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from "@angular/material/checkbox";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {CdkTableModule} from "@angular/cdk/table";
 import { ParameterFormComponent } from './components/parameter-form/parameter-form.component';
+import { TeamsComponent } from './components/teams/teams.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ParameterFormComponent } from './components/parameter-form/parameter-fo
     TableComponent,
     ParameterFormComponent,
     HumanFormComponent,
-    ParameterFormComponent
+    ParameterFormComponent,
+    TeamsComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +66,7 @@ import { ParameterFormComponent } from './components/parameter-form/parameter-fo
   exports:[],
   entryComponents: [HumanFormComponent],
   providers: [
-    {provide: ApiService, useClass: ApiService},
+    {provide: HumanApiService, useClass: HumanApiService},
     {provide: DateAdapter, useClass: MyDateAdapter},
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     {provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: {clickAction: "check"}  as MatCheckboxDefaultOptions}

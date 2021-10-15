@@ -15,6 +15,10 @@ export class HumanBeing {
 
 }
 
+export class Team{
+ public constructor(name: string) {}
+}
+
 
 export class Coordinates{
  constructor( public x:number, public y: number){}

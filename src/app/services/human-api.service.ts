@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class HumanApiService {
 
   constructor(public http: HttpClient) { }
 
@@ -22,32 +22,32 @@ export class ApiService {
   }
 
   public saveHumanBeing(band:any): Observable<any>{
-    return this.http.post(this.path, band,{headers: ApiService.getHeaders()});
+    return this.http.post(this.path, band,{headers: HumanApiService.getHeaders()});
   }
 
   public updateHumanBeing(id: number, band:any): Observable<any>{
-    return this.http.put(this.path + id, band,{headers: ApiService.getHeaders()});
+    return this.http.put(this.path + id, band,{headers: HumanApiService.getHeaders()});
   }
 
   public getHumanBeings(data: any): Observable<any>{
-    return this.http.get(this.path,{headers: ApiService.getHeaders(), params:data});
+    return this.http.get(this.path,{headers: HumanApiService.getHeaders(), params:data});
   }
 
   getById(id: number): Observable<HumanBeing>{
-    return this.http.get<HumanBeing>(this.path+id, {headers: ApiService.getHeaders()})
+    return this.http.get<HumanBeing>(this.path+id, {headers: HumanApiService.getHeaders()})
   }
 
   public deleteHumanBeing(id: number): Observable<any>{
-    return this.http.delete(this.path + id,{headers: ApiService.getHeaders()})
+    return this.http.delete(this.path + id,{headers: HumanApiService.getHeaders()})
   }
 
   public getHumanBeingsBySoundtrackNameStarts(soundtrackName: string):Observable<HumanBeing[]>{
-   return  this.http.get<HumanBeing[]>(this.path+'soundtrack-name-starts',{headers: ApiService.getHeaders(), params:{'soundtrack-name': soundtrackName}})
+   return  this.http.get<HumanBeing[]>(this.path+'soundtrack-name-starts',{headers: HumanApiService.getHeaders(), params:{'soundtrack-name': soundtrackName}})
   }
   public getCountByWeaponTypeLess(weaponType: WeaponType){
-   return  this.http.get(this.path+'weapon-type-less',{headers: ApiService.getHeaders(), params:{'weapon-type': weaponType.toString().toUpperCase()}})
+   return  this.http.get(this.path+'weapon-type-less',{headers: HumanApiService.getHeaders(), params:{'weapon-type': weaponType.toString().toUpperCase()}})
   }
   public deleteAllByMinutesOFWaiting(minutesOfWaiting: number): Observable<any>{
-    return this.http.delete(this.path,{headers: ApiService.getHeaders(), params:{'minutes-of-waiting': minutesOfWaiting}})
+    return this.http.delete(this.path,{headers: HumanApiService.getHeaders(), params:{'minutes-of-waiting': minutesOfWaiting}})
   }
 }

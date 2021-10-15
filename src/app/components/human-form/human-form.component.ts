@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { HumanBeing, WeaponType} from "../../model/humanBeing";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ApiService} from "../../services/api.service";
+import {HumanApiService} from "../../services/human-api.service";
 import {AppComponent} from "../../app.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HelperService} from "../../services/utils/helper.service";
@@ -30,7 +30,7 @@ export class HumanFormComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<HumanFormComponent>,
-              public api:ApiService,
+              public api:HumanApiService,
               public helper: HelperService,
               public snackBar: MatSnackBar) {
     if (data)

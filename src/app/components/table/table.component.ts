@@ -3,11 +3,12 @@ import {Car, Coordinates, HumanBeing, RequestType, WeaponType} from "../../model
 import {HelperService} from "../../services/utils/helper.service";
 import {MatDialog} from "@angular/material/dialog";
 import {HumanFormComponent} from "../human-form/human-form.component";
-import {ApiService} from "../../services/api.service";
+import {HumanApiService} from "../../services/human-api.service";
 import {PageEvent} from "@angular/material/paginator";
 import {AppComponent} from "../../app.component";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ParameterFormComponent} from "../parameter-form/parameter-form.component";
+import {TeamsComponent} from "../teams/teams.component";
 
 @Component({
   selector: 'app-table',
@@ -48,7 +49,7 @@ export class TableComponent implements OnInit {
   length = 0;
 
 
-  constructor(public dialog: MatDialog, public helper: HelperService, public api: ApiService, public snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, public helper: HelperService, public api: HumanApiService, public snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
     this.getHumans();
@@ -83,14 +84,14 @@ export class TableComponent implements OnInit {
         limit: this.limit,
         'page-index': this.pageIndex
     };
-    this.api.getHumanBeings(data).subscribe(v => {
-       this.humans = v.list as HumanBeing[];
-       this.length = v.totalItems;
-       this.pageIndex = v.pageIndex;
-       this.limit = v.pageSize;
-    },
-      e => {
-      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
+    // this.api.getHumanBeings(data).subscribe(v => {
+    //    this.humans = v.list as HumanBeing[];
+    //    this.length = v.totalItems;
+    //    this.pageIndex = v.pageIndex;
+    //    this.limit = v.pageSize;
+    // },
+    //   e => {
+    //   this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
   }
   openHumanBeingForm(human?: HumanBeing) {
     this.dialog.open(HumanFormComponent, {data: human }).afterClosed().subscribe(v => {
@@ -104,6 +105,10 @@ export class TableComponent implements OnInit {
     );
   }
 
+
+  openTeams() {
+    this.dialog.open(TeamsComponent)
+  }
 
   deleteHumanBeing(band: HumanBeing) {
     return this.api.deleteHumanBeing(band.id).subscribe( v => {
@@ -143,4 +148,5 @@ export class TableComponent implements OnInit {
     if ($event.key != '.' && $event.key != ',')
       input.value = v+''
   }
+
 }

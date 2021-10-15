@@ -57,3 +57,7 @@ form button.delete-button[disabled]{
 .cancel-button {
   background: linear-gradient(#666, #888);
 }
+
+.flex{
+  display: flex;
+}
