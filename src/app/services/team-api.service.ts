@@ -11,7 +11,7 @@ export class TeamApiService {
 
   constructor(public http: HttpClient) { }
 
-  path = 'heroes/';
+  path = 'api/heroes/';
 
   private static getHeaders(): HttpHeaders {
 
@@ -48,6 +48,18 @@ export class TeamApiService {
 
   public makeDepressive(teamId: number): Observable<any>{
     return this.http.post(this.path+'team/'+teamId+'/make-depressive',{},{headers: TeamApiService.getHeaders()})
+  }
+
+  public getTeamsBuHumanId(humanId: number): Observable<any>{
+    return this.http.get(this.path+'teams-by-human/'+humanId)
+  }
+
+  public removeHumanFromTeam(humanId: number, teamId:number): Observable<any>{
+   return  this.http.delete(this.path+teamId+'/'+humanId)
+  }
+
+  public addHumanToTeam(humanId: number, teamId:number): Observable<any>{
+    return  this.http.put(this.path+teamId+'/'+humanId,"")
   }
 
 }

@@ -16,7 +16,7 @@ export class HumanBeing {
 }
 
 export class Team{
- public constructor(name: string) {}
+ public constructor(public id: number,public name: string) {}
 }
 
 

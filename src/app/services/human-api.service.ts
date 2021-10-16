@@ -10,7 +10,7 @@ export class HumanApiService {
 
   constructor(public http: HttpClient) { }
 
-  path = 'human-being/';
+  path = 'api/human-being/';
 
   private static getHeaders(): HttpHeaders {
 

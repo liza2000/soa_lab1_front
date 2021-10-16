@@ -20,8 +20,8 @@ import {TeamsComponent} from "../teams/teams.component";
 export class TableComponent implements OnInit {
   humans: HumanBeing[] = [];
   columns = ['position','name', 'coordinatesX','coordinatesY','creationDate','realHero','hasToothpick','impactSpeed','soundtrackName','minutesOfWaiting','weaponType', 'carName', 'buttons'];
-  FLOAT_MAX=AppComponent.FLOAT_MAX;
-  DOUBLE_MAX=AppComponent.DOUBLE_MAX;
+  FLOAT_MAX = AppComponent.FLOAT_MAX;
+  DOUBLE_MAX = AppComponent.DOUBLE_MAX;
   name?: string;
   xStart?:number;
   xEnd?: number;
