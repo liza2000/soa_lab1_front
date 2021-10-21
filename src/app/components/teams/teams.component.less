@@ -12,13 +12,26 @@ h1{
     cursor: pointer;
   }
 }
-.table-container, .mat-form-field{
+.creation-form{
+  &>*{
+    margin: auto;
+  }
+  max-width: 330px;
+}
+.table-container, .creation-form{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  .mat-checkbox{
+    width: 100%;
+  }
+}
+.table-container{
   width: 330px;
   max-height: 400px;
   overflow-y: auto;
 }
 .mat-table {
-  width: 300px;
   max-height: 500px;
   overflow: auto;
 
@@ -49,7 +62,6 @@ h1{
       height: 100%;
     }
 
-
-
   }
 }
+

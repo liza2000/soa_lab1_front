@@ -10,7 +10,7 @@ export class HumanApiService {
 
   constructor(public http: HttpClient) { }
 
-  path = 'api/human-being/';
+  path = 'https://localhost:28443/soa_lab1-snapshot/api/human-being/';
 
   private static getHeaders(): HttpHeaders {
 

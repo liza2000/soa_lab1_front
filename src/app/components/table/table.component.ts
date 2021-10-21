@@ -27,8 +27,8 @@ export class TableComponent implements OnInit {
   xEnd?: number;
   yStart?:number;
   yEnd?:number;
-  dateStart?:Date|null;
-  dateEnd?:Date|null;
+  dateStart?:Date;
+  dateEnd?:Date;
   realHero?: string;
   hasToothpick?: string;
   impactSpeedStart?:number;
@@ -84,14 +84,14 @@ export class TableComponent implements OnInit {
         limit: this.limit,
         'page-index': this.pageIndex
     };
-    // this.api.getHumanBeings(data).subscribe(v => {
-    //    this.humans = v.list as HumanBeing[];
-    //    this.length = v.totalItems;
-    //    this.pageIndex = v.pageIndex;
-    //    this.limit = v.pageSize;
-    // },
-    //   e => {
-    //   this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
+    this.api.getHumanBeings(data).subscribe(v => {
+       this.humans = v.list as HumanBeing[];
+       this.length = v.totalItems;
+       this.pageIndex = v.pageIndex;
+       this.limit = v.pageSize;
+    },
+      e => {
+      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
   }
   openHumanBeingForm(human?: HumanBeing) {
     this.dialog.open(HumanFormComponent, {data: human }).afterClosed().subscribe(v => {
@@ -106,8 +106,16 @@ export class TableComponent implements OnInit {
   }
 
 
-  openTeams() {
-    this.dialog.open(TeamsComponent)
+  openTeams(human?: HumanBeing) {
+    if (!human)
+      this.dialog.open(TeamsComponent).afterClosed().subscribe(v=>{
+        if (v)
+          this.getHumans();
+      });
+    else this.dialog.open(TeamsComponent, {data: human.id}).afterClosed().subscribe(v=>{
+      if (v)
+        this.getHumans();
+    })
   }
 
   deleteHumanBeing(band: HumanBeing) {

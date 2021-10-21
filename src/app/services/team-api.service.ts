@@ -11,7 +11,7 @@ export class TeamApiService {
 
   constructor(public http: HttpClient) { }
 
-  path = 'api/heroes/';
+  path = 'https://localhost:38443/NewService/api/heroes/';
 
   private static getHeaders(): HttpHeaders {
 
@@ -42,8 +42,8 @@ export class TeamApiService {
     return this.http.delete(this.path + id,{headers: TeamApiService.getHeaders()})
   }
 
-  public search(realHeroOnly: boolean): Observable<HumanBeing[]>{
-    return this.http.get<HumanBeing[]>(this.path+'search' + (realHeroOnly?'/real-hero-only':''),{headers: TeamApiService.getHeaders()});
+  public search(realHeroOnly: boolean): Observable<any>{
+    return this.http.get(`${this.path}search/${realHeroOnly}`,{headers: TeamApiService.getHeaders()});
   }
 
   public makeDepressive(teamId: number): Observable<any>{
@@ -59,7 +59,7 @@ export class TeamApiService {
   }
 
   public addHumanToTeam(humanId: number, teamId:number): Observable<any>{
-    return  this.http.put(this.path+teamId+'/'+humanId,"")
+    return  this.http.put(this.path+teamId+'/'+humanId,null)
   }
 
 }
