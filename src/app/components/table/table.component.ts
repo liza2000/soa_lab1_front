@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Car, Coordinates, HumanBeing, RequestType, WeaponType} from "../../model/humanBeing";
+import { Listing, RequestType} from "../../model/listing";
 import {HelperService} from "../../services/utils/helper.service";
 import {MatDialog} from "@angular/material/dialog";
-import {HumanFormComponent} from "../human-form/human-form.component";
+import {ListingFormComponent} from "../listing-form/listing-form.component";
 import {ApiService} from "../../services/api.service";
 import {PageEvent} from "@angular/material/paginator";
 import {AppComponent} from "../../app.component";
@@ -17,26 +17,18 @@ import {ParameterFormComponent} from "../parameter-form/parameter-form.component
 
 
 export class TableComponent implements OnInit {
-  humans: HumanBeing[] = [];
-  columns = ['position','name', 'coordinatesX','coordinatesY','creationDate','realHero','hasToothpick','impactSpeed','soundtrackName','minutesOfWaiting','weaponType', 'carName', 'buttons'];
+  listings: Listing[] = [];
+  columns = ['position','name', 'price','rating','city','date', 'buttons'];
   FLOAT_MAX=AppComponent.FLOAT_MAX;
-  DOUBLE_MAX=AppComponent.DOUBLE_MAX;
+  LONG_MAX=AppComponent.LONG_MAX;
   name?: string;
-  xStart?:number;
-  xEnd?: number;
-  yStart?:number;
-  yEnd?:number;
+  priceStart?:number;
+  priceEnd?: number;
+  ratingStart?:number;
+  ratingEnd?:number;
   dateStart?:Date|null;
   dateEnd?:Date|null;
-  realHero?: string;
-  hasToothpick?: string;
-  impactSpeedStart?:number;
-  impactSpeedEnd?:number;
-  soundtrackName?:string;
-  minutesOfWaitingStart?:number;
-  minutesOfWaitingEnd?:number;
-  weaponTypes:WeaponType[] = [];
-  car?: string;
+  city?:string;
 
 
 
@@ -51,7 +43,7 @@ export class TableComponent implements OnInit {
   constructor(public dialog: MatDialog, public helper: HelperService, public api: ApiService, public snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
-    this.getHumans();
+    this.getListings();
   }
 
   getFilterParameter(a?: any, b?:any){
@@ -65,26 +57,23 @@ export class TableComponent implements OnInit {
       return a;
     return [a,b];
   }
-  getHumans() {
+  getListings() {
     let  sort = this.columnsToSort.slice();
     let data = {
         sort: sort.reverse(),
         name:(!this.name||this.name==='')?[]:this.name,
-        coordinatesx:  this.getFilterParameter(this.xStart,this.xEnd),
-        coordinatesy: this.getFilterParameter(this.yStart,this.yEnd),
-        'creation-date':this.getFilterParameter(this.helper.format(this.dateStart),this.helper.format(this.dateEnd)),
-        'impact-speed':this.getFilterParameter(this.impactSpeedStart,this.impactSpeedEnd),
-        'minutes-of-waiting': this.getFilterParameter(this.minutesOfWaitingStart,this.minutesOfWaitingEnd),
-        'weapon-type': this.weaponTypes,
-        'real-hero': this.getFilterParameter(this.realHero, this.realHero),
-        'has-toothpick': this.getFilterParameter(this.hasToothpick, this.hasToothpick),
-        'soundtrack-name': (!this.soundtrackName||this.soundtrackName==='')?[]:this.soundtrackName,
-        'carname': (!this.car||this.car==='')?[]:this.car,
+        priceMin:  this.priceStart==null?-this.LONG_MAX:this.priceStart,
+        priceMax:  this.priceEnd==null?this.LONG_MAX:this.priceEnd,
+        ratingMin: this.ratingStart==null?-this.LONG_MAX:this.ratingStart,
+        ratingMax: this.ratingEnd==null?this.LONG_MAX:this.ratingEnd,
+        city: (!this.city||this.city==='')?[]:this.city,
         limit: this.limit,
-        'page-index': this.pageIndex
+        dateStart:this.helper.format(this.dateStart),
+        dateEnd:this.helper.format(this.dateEnd),
+        pageIndex: this.pageIndex
     };
-    this.api.getHumanBeings(data).subscribe(v => {
-       this.humans = v.list as HumanBeing[];
+    this.api.getListings(data).subscribe(v => {
+       this.listings = v.list.slice() as Listing[];
        this.length = v.totalItems;
        this.pageIndex = v.pageIndex;
        this.limit = v.pageSize;
@@ -92,23 +81,23 @@ export class TableComponent implements OnInit {
       e => {
       this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
   }
-  openHumanBeingForm(human?: HumanBeing) {
-    this.dialog.open(HumanFormComponent, {data: human }).afterClosed().subscribe(v => {
-      if (v) this.getHumans()}
+  openListingForm(listing?: Listing) {
+    this.dialog.open(ListingFormComponent, {data: listing }).afterClosed().subscribe(v => {
+      if (v) this.getListings()}
     )
   }
 
   openForResult(request: RequestType) {
     this.dialog.open(ParameterFormComponent, {data: request}).afterClosed().subscribe(v => {
-      if (v) this.getHumans()}
+      if (v) this.getListings()}
     );
   }
 
 
-  deleteHumanBeing(band: HumanBeing) {
-    return this.api.deleteHumanBeing(band.id).subscribe( v => {
+  deleteListing(listing: Listing) {
+    return this.api.deleteListing(listing.id).subscribe( v => {
       this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr", panelClass: 'success-snackbar'});
-      this.getHumans()}, error => {
+      this.getListings()}, error => {
       this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})})
   }
 
@@ -120,13 +109,10 @@ export class TableComponent implements OnInit {
     if (e.direction==='asc')
       this.columnsToSort.push('asc_'+e.active);
     else this.columnsToSort.push('desc_'+e.active);
-    this.getHumans()
+    this.getListings()
   }
 
 
-  getWeaponType(): string[]{
-    return Object.keys(WeaponType)
-  }
   getRequestType(){
     return RequestType
   }
@@ -135,7 +121,7 @@ export class TableComponent implements OnInit {
   setPageOptions(e: PageEvent) {
     this.limit = e.pageSize;
     this.pageIndex = e.pageIndex;
-    this.getHumans()
+    this.getListings()
   }
 
 

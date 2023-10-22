@@ -1,0 +1,46 @@
+<form *ngIf="!result" [formGroup]="formGroup" >
+  <h1> {{listing?'Update':'New'}} Listing</h1>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [formControl]="name">
+    <mat-error *ngIf="name.invalid">Name should not be empty</mat-error>
+  </mat-form-field>
+  <div class="half" >
+  <mat-form-field>
+    <mat-label>Price:</mat-label>
+    <input matInput type="number" [formControl]="price" >
+    <mat-error *ngIf="price.hasError('required')">Please, type price with digits</mat-error>
+      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Rating</mat-label>
+      <input matInput type="number"  [formControl]="rating">
+      <mat-error *ngIf="rating.hasError('required')">Please, type rating with digits</mat-error>
+       </mat-form-field>
+  </div>
+  <mat-form-field>
+    <mat-label>City name</mat-label>
+    <input matInput [formControl]="city">
+    <mat-error *ngIf="city.invalid">Please, type city name</mat-error>
+  </mat-form-field>
+
+  <div>
+    <button class="open-button form-button" [disabled]="formGroup.invalid" (click)="saveListing()">{{listing?'Update':'Create'}}</button>
+    <button class="cancel-button form-button" (click)="close()">Cancel</button>
+  </div>
+</form>
+
+<div class="result" *ngIf="result">
+  <h1>Listing <strong> {{result?.name}}</strong> {{listing?'updates':'created'}}</h1>
+  <p>Id: <strong>{{result?.id}}</strong></p>
+  <p>Name: <strong>{{result?.name}}</strong></p>
+  <div class="half">
+    <p>Price: <strong>{{result?.price}}</strong></p>
+    <p>Rating <strong>{{result?.rating}}</strong></p>
+  </div>
+  <p>Сity name: <strong>{{result?.city}}</strong></p>
+
+  <p>Creation date:<strong> {{helper.format(result?.date)}}</strong></p>
+  <button class="open-button form-button" (click)="this.close(result)">Ok</button>
+</div>
+
+

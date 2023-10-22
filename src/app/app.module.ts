@@ -19,7 +19,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatSliderModule} from "@angular/material/slider";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxMatRangeSliderModule} from "ngx-mat-range-slider";
-import { HumanFormComponent } from './components/human-form/human-form.component';
+import { ListingFormComponent } from './components/listing-form/listing-form.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "./services/api.service";
 import {HttpClientModule} from "@angular/common/http";
@@ -34,7 +34,7 @@ import { ParameterFormComponent } from './components/parameter-form/parameter-fo
     AppComponent,
     TableComponent,
     ParameterFormComponent,
-    HumanFormComponent,
+    ListingFormComponent,
     ParameterFormComponent
   ],
   imports: [
@@ -62,7 +62,7 @@ import { ParameterFormComponent } from './components/parameter-form/parameter-fo
     CdkTableModule
   ],
   exports:[],
-  entryComponents: [HumanFormComponent],
+  entryComponents: [ListingFormComponent],
   providers: [
     {provide: ApiService, useClass: ApiService},
     {provide: DateAdapter, useClass: MyDateAdapter},

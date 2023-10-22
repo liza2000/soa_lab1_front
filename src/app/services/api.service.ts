@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {HumanBeing, WeaponType} from "../model/humanBeing";
-import {Observable} from "rxjs";
-
+import {Listing} from "../model/listing";
+import {Observable, of} from "rxjs";
+import * as moment from 'moment'
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +10,9 @@ export class ApiService {
 
   constructor(public http: HttpClient) { }
 
-  path = 'human-being/';
+  path = 'listing/';
+
+  public list: Listing[] = []
 
   private static getHeaders(): HttpHeaders {
 
@@ -21,33 +23,38 @@ export class ApiService {
     return headers;
   }
 
-  public saveHumanBeing(band:any): Observable<any>{
-    return this.http.post(this.path, band,{headers: ApiService.getHeaders()});
+  public saveListing(listing:any): Observable<any>{
+    listing.date = new Date()
+    this.list.push(listing)
+    return of(listing)
+    // return this.http.post(this.path, listing,{headers: ApiService.getHeaders()});
   }
 
-  public updateHumanBeing(id: number, band:any): Observable<any>{
-    return this.http.put(this.path + id, band,{headers: ApiService.getHeaders()});
+  public updateListing(id: number, listing:any): Observable<any>{
+    return this.http.put(this.path + id, listing,{headers: ApiService.getHeaders()});
   }
 
-  public getHumanBeings(data: any): Observable<any>{
-    return this.http.get(this.path,{headers: ApiService.getHeaders(), params:data});
+  public getListings(data: any): Observable<any>{
+    return of ({list: this.list.filter(l => {
+        return (!(data.name?.length)|| l.name.includes(data.name))
+        && (!(data.dateStart || data.dateEnd) ||(moment(data.dateStart, 'DD.MM.YYYY').isSameOrBefore(l.date, 'day') && moment(data.dateEnd,'DD.MM.YYYY').isSameOrAfter(l.date,'day')))
+          && (!(data.priceMin || data.priceMax) ||(l.price>=data.priceMin && l.price<=data.priceMax ))
+          && (!(data.ratingMin || data.ratingMax) ||(l.rating>=data.ratingMin && l.rating<=data.ratingMax ))
+        && (!(data.city?.length)|| l.city.includes(data.city) )
+      }),
+      totalItems: this.list.length,
+    pageIndex:0,
+      pageSize:10
+    })
+    // return this.http.get(this.path+'search/',{headers: ApiService.getHeaders(), params:data});
   }
 
-  getById(id: number): Observable<HumanBeing>{
-    return this.http.get<HumanBeing>(this.path+id, {headers: ApiService.getHeaders()})
+  getById(id: number): Observable<Listing>{
+    return this.http.get<Listing>(this.path+id, {headers: ApiService.getHeaders()})
   }
 
-  public deleteHumanBeing(id: number): Observable<any>{
+  public deleteListing(id: number): Observable<any>{
     return this.http.delete(this.path + id,{headers: ApiService.getHeaders()})
   }
 
-  public getHumanBeingsBySoundtrackNameStarts(soundtrackName: string):Observable<HumanBeing[]>{
-   return  this.http.get<HumanBeing[]>(this.path+'soundtrack-name-starts',{headers: ApiService.getHeaders(), params:{'soundtrack-name': soundtrackName}})
-  }
-  public getCountByWeaponTypeLess(weaponType: WeaponType){
-   return  this.http.get(this.path+'weapon-type-less',{headers: ApiService.getHeaders(), params:{'weapon-type': weaponType.toString().toUpperCase()}})
-  }
-  public deleteAllByMinutesOFWaiting(minutesOfWaiting: number): Observable<any>{
-    return this.http.delete(this.path,{headers: ApiService.getHeaders(), params:{'minutes-of-waiting': minutesOfWaiting}})
-  }
 }
