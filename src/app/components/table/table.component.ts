@@ -10,6 +10,7 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ParameterFormComponent} from "../parameter-form/parameter-form.component";
 import {Router} from "@angular/router";
 import {SearchRequest} from "../../model/search-request";
+import {ListingInfoComponent} from "../listing-info/listing-info.component";
 
 @Component({
   selector: 'app-table',
@@ -20,14 +21,11 @@ import {SearchRequest} from "../../model/search-request";
 
 export class TableComponent implements OnInit {
   listings: Listing[] = [];
-  columns = ['position','name', 'price','rating','city','date', 'buttons'];
+  columns = ['position','name', 'price','rating','city', 'buttons'];
   FLOAT_MAX=AppComponent.FLOAT_MAX;
   LONG_MAX=AppComponent.LONG_MAX;
-  name?: string;
   priceStart?:number;
-  priceEnd?: number;
-  ratingStart?:number;
-  ratingEnd?:number;
+  priceEnd?: number
   dateStart = new Date();
   dateEnd = this.helper.addDate(this.dateStart, 7);
   city?:string;
@@ -36,100 +34,66 @@ export class TableComponent implements OnInit {
 
   columnsToSort: string[] = [];
 
-  pageSizeOptions = [5,10,15];
-  limit = 10;
-  pageIndex = 0;
-  length = 0;
-  isHost = false
+  role = 'USER'
 
 
   constructor(public dialog: MatDialog, public helper: HelperService, public api: UserApiService, public snackBar: MatSnackBar, private router: Router) { }
 
     ngOnInit(): void {
-     this.isHost = localStorage.getItem("isHost") == 'true'
+     this.role = localStorage.getItem("role") || 'USER'
      this.getListings();
   }
 
-  getFilterParameter(a?: any, b?:any){
-    if (a==undefined && b==undefined)
-      return [];
-    if (a==undefined)
-      return ['',b];
-    if (b==undefined)
-      return [a,''];
-    if (a==b)
-      return a;
-    return [a,b];
-  }
   getListings() {
-    let  sort = this.columnsToSort.slice();
-    let data = new SearchRequest(sort.reverse(),
-        (!this.name||this.name==='')?'':this.name,
+    let data = new SearchRequest(
           this.priceStart==null?-this.LONG_MAX:this.priceStart,
         this.priceEnd==null?this.LONG_MAX:this.priceEnd,
-        this.ratingStart==null?-this.LONG_MAX:this.ratingStart,
-        this.ratingEnd==null?this.LONG_MAX:this.ratingEnd,
          (!this.city||this.city==='')?'':this.city,
-        this.limit,
         this.helper.format(this.dateStart),
-        this.helper.format(this.dateEnd),
-        this.pageIndex)
+        this.helper.format(this.dateEnd))
+
     this.api.getListings(data).subscribe(v => {
-       this.listings = v.list.slice() as Listing[];
-       this.length = v.totalItems;
-       this.pageIndex = v.pageIndex;
-       this.limit = v.pageSize;
+       this.listings = v.slice() as Listing[];
     },
       e => {
       this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
+    this.listings = UserApiService.list
   }
   openListingForm(listing?: Listing) {
-    let data = {
-      listing: listing,
-      isHost: this.isHost,
-      startDate: this.dateStart,
-      endDate: this.dateEnd
-    }
-    this.dialog.open(ListingFormComponent, {data: data }).afterClosed().subscribe(v => {
-      if (v) this.getListings()}
-    )
+      let data = {
+        listing: listing,
+        role: this.role,
+        startDate: this.dateStart,
+        endDate: this.dateEnd
+      }
+      this.dialog.open(ListingFormComponent, {data: data }).afterClosed().subscribe(v => {
+        if (v) this.getListings()}
+      )
   }
 
-  openForResult(request: RequestType) {
-    this.dialog.open(ParameterFormComponent, {data: request}).afterClosed().subscribe(v => {
-      if (v) this.getListings()}
-    );
+  openListingInfo(listing: Listing){
+    this.api.getById(listing.id).subscribe(listingFull=>{
+
+      let data = {
+        listing: listingFull,
+        startDate: this.dateStart,
+        endDate: this.dateEnd,
+        withButtons: true
+      }
+      this.dialog.open(ListingInfoComponent, {data: data}).afterClosed().subscribe(v => {
+          if (v) this.getListings()
+        }
+      )
+
+    })
   }
 
 
   deleteListing(listing: Listing) {
-    return this.api.deleteListing(listing.id).subscribe( v => {
-      this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr", panelClass: 'success-snackbar'});
-      this.getListings()}, error => {
-      this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})})
-  }
-
-
-
-  setSortData(e: any) {
-    this.columnsToSort = this.columnsToSort.filter( s => s.split('_',2)[1]!==e.active);
-    if (e.direction==='') return;
-    if (e.direction==='asc')
-      this.columnsToSort.push('asc_'+e.active);
-    else this.columnsToSort.push('desc_'+e.active);
-    this.getListings()
-  }
-
-
-  getRequestType(){
-    return RequestType
-  }
-
-
-  setPageOptions(e: PageEvent) {
-    this.limit = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    this.getListings()
+    // return this.api.deleteListing(listing.id).subscribe( v => {
+    //   this.snackBar.open(v,'Success',{duration: 5000, direction: "ltr", panelClass: 'success-snackbar'});
+    //   this.getListings()}, error => {
+    //   this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})})
   }
 
 
@@ -140,7 +104,6 @@ export class TableComponent implements OnInit {
 
   logOut() {
     localStorage.removeItem("currentUser")
-    localStorage.removeItem("isHost")
     this.router.navigate(['/login'])
   }
 

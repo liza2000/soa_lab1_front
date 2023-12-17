@@ -23,6 +23,6 @@
   </form>
 
   <button class="form-button open-button" [disabled]="!formGroup.valid" (click)="formGroup.valid && register()" >Register as client</button>
-  <button class="form-button open-button" [disabled]="!formGroup.valid" (click)="formGroup.valid && register()" >Register as host</button>
+  <button class="form-button open-button" [disabled]="!formGroup.valid" (click)="formGroup.valid && registerAsHost()" >Register as host</button>
   <button class="form-button get-button"  [routerLink]="['/login']">Log in</button>
 </mat-card>

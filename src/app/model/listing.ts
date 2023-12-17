@@ -4,9 +4,7 @@ export class Listing {
               public name: string,
               public price: number,
               public rating: number,
-              public city: string,
-              public info: string,
-              public date: Date) {
+              public city: string) {
   }
 
 }

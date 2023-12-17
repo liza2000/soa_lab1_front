@@ -1,16 +1,12 @@
 <mat-card class="top">
 <!--  <mat-chip class="get-button" (click)="openForResult(getRequestType().GET_BY_ID)">Get by id</mat-chip>-->
-  <mat-chip *ngIf="isHost" class="open-button" (click)="openListingForm()">Create Listing</mat-chip>
-  <mat-chip *ngIf="!isHost" class="open-button" (click)="openMyBookings()">My bookings</mat-chip>
+  <mat-chip *ngIf="role=='HOST'" class="open-button" (click)="openListingForm()">Create Listing</mat-chip>
+  <mat-chip *ngIf="role!='HOST' && false" class="open-button" (click)="openMyBookings()">My bookings</mat-chip>
   <mat-chip class="get-button" (click)="logOut()">Log out</mat-chip>
 </mat-card>
 
 <div  class="container">
 <mat-card class="filter-container">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-      <input [(ngModel)]="name" matInput (change)="getListings()">
-  </mat-form-field>
   <div class="number-filters">
     <span>Price: </span>
     <div>
@@ -23,17 +19,6 @@
         <input type="number" #priceEn (keyup)="setNumFilter(priceEn,$event, priceEnd)" [min]="-LONG_MAX-1" [max]="LONG_MAX" [(ngModel)]="priceEnd" matInput (change)="priceEnd = helper.setNum(LONG_MAX,priceEnd); getListings()">
       </mat-form-field>
     </div>
-    <span>Rating: </span>
-    <div>
-      <mat-form-field>
-        <mat-label>From:</mat-label>
-        <input type="number" #ratingST (keyup)="setNumFilter(ratingST,$event,ratingStart)" [min]="-LONG_MAX-1" [max]="LONG_MAX" [(ngModel)]="ratingStart" matInput (change)="ratingStart = helper.setNum(LONG_MAX,ratingStart); getListings()">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>To:</mat-label>
-        <input type="number" #ratingEN (keyup)="setNumFilter(ratingEN,$event,ratingEnd)" [min]="-LONG_MAX-1" [max]="LONG_MAX" [(ngModel)]="ratingEnd" matInput (change)="ratingEnd = helper.setNum(LONG_MAX,ratingEnd); getListings()">
-      </mat-form-field>
-    </div>
   </div>
   <mat-form-field>
     <mat-label>Date</mat-label>
@@ -41,7 +26,6 @@
       <input #startDate (focus)="startDate.blur()" matStartDate [(ngModel)]="dateStart">
       <input #endDate (focus)="endDate.blur()" matEndDate [(ngModel)]="dateEnd">
     </mat-date-range-input>
-<!--    <mat-icon matSuffix *ngIf="dateStart||dateEnd" (click)="dateStart=null;dateEnd=null;getListings()">clear</mat-icon>-->
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker (closed)="getListings()"></mat-date-range-picker>
   </mat-form-field>
@@ -52,40 +36,34 @@
 
 </mat-card>
 <mat-card class="table-container">
-<table matSort (matSortChange)="setSortData($event)" mat-table [dataSource]="listings">
+<table  mat-table [dataSource]="listings">
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let myRowData; columns: columns"></tr>
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef class="position-column">№</th>
       <td mat-cell *matCellDef="let i = index">
-        <div class="cell-content">{{i+1+limit*pageIndex}}</div>
+        <div class="cell-content">{{i+1}}</div>
       </td>
     </ng-container>
     <ng-container matColumnDef="name">
-      <th  mat-sort-header mat-header-cell *matHeaderCellDef class="name-column">Name</th>
+      <th  mat-header-cell *matHeaderCellDef class="name-column">Name</th>
       <td mat-cell *matCellDef="let listing"><div class="cell-content">{{listing.name}}</div></td>
     </ng-container>
     <ng-container matColumnDef="price">
-      <th mat-sort-header mat-header-cell *matHeaderCellDef class="number-column">Price</th>
+      <th mat-header-cell *matHeaderCellDef class="number-column">Price</th>
       <td mat-cell *matCellDef="let listing">
         <div class="cell-content">{{listing.price}}</div>
       </td>
     </ng-container>
   <ng-container matColumnDef="rating">
-    <th mat-sort-header mat-header-cell *matHeaderCellDef class="number-column">Rating</th>
+    <th mat-header-cell *matHeaderCellDef class="number-column">Rating</th>
     <td mat-cell *matCellDef="let listing">
       <div class="cell-content">{{listing.rating}}</div>
     </td>
   </ng-container>
-  <ng-container matColumnDef="date">
-    <th mat-sort-header mat-header-cell *matHeaderCellDef class="date-column">Creation Date</th>
-    <td mat-cell *matCellDef="let listing">
-      <div class="cell-content">{{helper.format(listing.date)}}</div>
-    </td>
-  </ng-container>
   <ng-container matColumnDef="city">
-    <th mat-sort-header mat-header-cell *matHeaderCellDef class="city-column">City</th>
+    <th mat-header-cell *matHeaderCellDef class="city-column">City</th>
     <td mat-cell *matCellDef="let listing">
       <div class="cell-content">{{listing.city}}</div>
     </td>
@@ -94,21 +72,12 @@
      <th mat-header-cell *matHeaderCellDef class="button-column"></th>
      <td mat-cell *matCellDef="let listing">
        <div class="button-container cell-content">
-         <mat-icon *ngIf="isHost"  (click)="openListingForm(listing)">edit</mat-icon>
-         <mat-icon *ngIf="isHost" (click)="deleteListing(listing)">delete</mat-icon>
-         <mat-chip class="open-button" *ngIf="!isHost" (click)="openListingForm(listing)">View</mat-chip>
+         <mat-icon *ngIf="role=='HOST'"  >edit</mat-icon>
+         <mat-icon *ngIf="role=='HOST'" (click)="deleteListing(listing)">delete</mat-icon>
+         <mat-chip class="open-button" *ngIf="role!='HOST'" (click)="openListingInfo(listing)">View</mat-chip>
        </div>
      </td>
    </ng-container>
   </table>
-  <mat-paginator *ngIf="length>0"
-          [length]="length"
-          [pageIndex]="pageIndex"
-          [pageSize]="limit"
-          [pageSizeOptions]="pageSizeOptions"
-          [showFirstLastButtons]="false"
-          (page)="setPageOptions($event)">
-
-  </mat-paginator>
 </mat-card>
 </div>

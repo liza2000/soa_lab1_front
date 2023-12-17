@@ -28,11 +28,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.userService.createAccount(this.formGroup.getRawValue()).subscribe(data => {
+
+    let data = {
+      login: this.loginControl.value,
+      password: this.passwordControl.value
+    }
+    this.userService.createAccount(data).subscribe(data => {
         this.router.navigate(['/login']);
       }, err => {
 
-      this.snackBar.open(err?.message||'Failed to register', 'Error', {duration: 5000})
+      this.snackBar.open(err.error||'Failed to register', 'Error', {duration: 5000})
       }
     );
   }
@@ -43,4 +48,18 @@ export class RegisterComponent implements OnInit {
     return   i >= 1139 ? 'desktop' : i >= 676 ? 'table' : 'mobile';
   }
 
+  registerAsHost() {
+
+    let data = {
+      login: this.loginControl.value,
+      password: this.passwordControl.value
+    }
+    this.userService.createHostAccount(data).subscribe(data => {
+        this.router.navigate(['/login']);
+      }, err => {
+
+        this.snackBar.open(err.error||'Failed to register', 'Error', {duration: 5000})
+      }
+    );
+  }
 }

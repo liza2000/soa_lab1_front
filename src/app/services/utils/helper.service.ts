@@ -8,6 +8,7 @@ export class HelperService {
   constructor() { }
 
 
+  public static ADDR = ''
   setNum(limit: number, v?:number){
     if (!v) return v;
     v = Math.min(v,limit);
@@ -17,7 +18,7 @@ export class HelperService {
 
   format(date?: Date | null){
     if (date)
-    return moment(date).format("DD.MM.yyyy");
+    return moment(date).format("DD-MM-yyyy");
     return ''
   }
 

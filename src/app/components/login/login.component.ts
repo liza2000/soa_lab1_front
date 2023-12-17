@@ -25,12 +25,15 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.userService.logIn(this.formGroup.getRawValue())
+    let data = {
+      login: this.loginControl.value,
+      password: this.passwordControl.value
+    }
+    this.userService.logIn(data)
       .subscribe(data => {
-        localStorage.setItem('currentUser',this.loginControl.value)
-        localStorage.setItem("isHost", this.loginControl.value=='host'?'true':'false')
-        localStorage.setItem("isAdmin", this.loginControl.value=='admin'?'true':'false')
-        if (this.loginControl.value=='admin')
+        localStorage.setItem('currentUser',data.token)
+        localStorage.setItem("role", data.role)
+        if (data.role=='ADMIN')
           this.router.navigate(['/admin']);
         else
           this.router.navigate(['/listings']);

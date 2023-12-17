@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {HelperService} from "../../services/utils/helper.service";
 import {verifyHostBindings} from "@angular/compiler";
 import {HostApiService} from "../../services/host-api.service";
+import {ListingFull} from "../../model/listing-full";
 
 @Component({
   selector: 'app-listing-dialog',
@@ -18,10 +19,6 @@ export class ListingFormComponent implements OnInit {
   listing?: Listing;
 
   result?: Listing;
-  isHost = true;
-  isAdmin = true;
-  startDate = new Date();
-  endDate = new Date()
   weatherData: any
 
   name = new FormControl('',[Validators.required, v => v.value.trim().length==0?{blank: true}:null]);
@@ -38,12 +35,6 @@ export class ListingFormComponent implements OnInit {
               public snackBar: MatSnackBar) {
     if (data) {
       this.listing = data.listing;
-      this.isHost = data.isHost
-      this.startDate = data.startDate
-      this.endDate = data.endDate
-      if (!this.isHost)
-        this.result = this.listing
-        this.getWeatherData()
     }
   }
 
@@ -52,7 +43,6 @@ export class ListingFormComponent implements OnInit {
   formGroup: FormGroup = new FormGroup({
     name: this.name,
     price: this.price,
-    info: this.info,
     city: this.city,
   });
 
@@ -75,37 +65,24 @@ export class ListingFormComponent implements OnInit {
     let data = {
       name: this.name.value.trim(),
       price: this.price.value,
-      rating: 0,
-      info: this.info.value,
       city:  this.city.value,
     };
     if (!this.listing)
-      this.hostApi.saveListing(data).subscribe(value => this.result = value, error => {
+      this.hostApi.saveListing(data).subscribe(value => {
+        this.result = value
+        this.snackBar.open("Created successfully", 'Success:', {duration: 5000, panelClass: 'success-snackbar'})
+      }, error => {
         this.snackBar.open(error.error, 'Error:', {duration: 5000, panelClass: 'error-snackbar'})
       });
-    else
-      this.hostApi.updateListing(this.listing.id,data).subscribe(value =>{
-        this.snackBar.open(value, 'Success', {duration: 5000, panelClass: 'success-snackbar'});
-        this.close(value)
-      }, error => {
-        this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})
-      });
+    // else
+      // this.hostApi.updateListing(this.listing.id,data).subscribe(value =>{
+      //   this.snackBar.open(value, 'Success', {duration: 5000, panelClass: 'success-snackbar'});
+      //   this.close(value)
+      // }, error => {
+      //   this.snackBar.open(error.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})
+      // });
   }
 
 
-  bookListing() {
-      this.api.bookListing(localStorage.getItem("currentUser") ||'',this.listing).subscribe(v=> {
-        this.snackBar.open("Listing successfully booked", 'Success', {duration: 5000, panelClass: 'success-snackbar'});
-        this.close()
-      })
-  }
 
-  getWeatherData() {
-    this.api.getCityData(this.result?.city || '').subscribe( (coords: any) => {
-      this.api.getWeatherData(coords[0].lat,coords[0].lon, this.startDate).subscribe(d=>{
-        this.weatherData = d.weather[0].description;
-      })
-
-    })
-  }
 }

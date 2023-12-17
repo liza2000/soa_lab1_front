@@ -1,4 +1,4 @@
-<form *ngIf="isHost &&!result" [formGroup]="formGroup" >
+<form *ngIf="!result" [formGroup]="formGroup" >
   <h1> {{listing?'Update':'New'}} Listing</h1>
   <mat-form-field>
     <mat-label>Name</mat-label>
@@ -11,11 +11,6 @@
     <input matInput type="number" [formControl]="price" >
     <mat-error *ngIf="price.hasError('required')">Please, type price with digits</mat-error>
       </mat-form-field>
-    <mat-form-field>
-      <mat-label>Info</mat-label>
-      <input matInput  [formControl]="info">
-      <mat-error *ngIf="info.hasError('required')">Please, type listing info</mat-error>
-    </mat-form-field>
   </div>
   <mat-form-field>
     <mat-label>City name</mat-label>
@@ -29,22 +24,18 @@
   </div>
 </form>
 
-<div class="result" *ngIf=" !isHost || result">
+<div class="result" *ngIf=" result">
   <h1>Listing <strong> {{result?.name}}</strong> {{listing?'updated':'created'}}</h1>
   <p>Name: <strong>{{result?.name}}</strong></p>
   <div class="half">
     <p>Price: <strong>{{result?.price}}</strong></p>
     <p>Rating <strong>{{result?.rating || 'No any reviews'}}</strong></p>
   </div>
-  <p>Info: {{result?.info}}</p>
   <p>Сity name: <strong>{{result?.city}}</strong></p>
 
    <p *ngIf="weatherData">Weather in this sity on selected dates: <strong >{{weatherData}}</strong></p>
 
-  <p>Creation date:<strong> {{helper.format(result?.date)}}</strong></p>
-  <button *ngIf="isHost" class="open-button form-button" (click)="this.close(result)">Ok</button>
-  <button *ngIf="!isHost" class="open-button form-button" (click)="bookListing()">Book</button>
-  <button *ngIf="!isHost" class="cancel-button form-button" (click)="this.close()">Cancel</button>
+  <button  class="open-button form-button" (click)="this.close(result)">Ok</button>
 </div>
 
 

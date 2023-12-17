@@ -3,7 +3,8 @@ import {User} from "../model/user";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AppComponent} from "../app.component";
 import {map} from "rxjs/operators";
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
+import {HelperService} from "./utils/helper.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,33 +12,33 @@ import {of} from "rxjs";
 export class UserService {
 
 
+  path = HelperService.ADDR + 'auth/'
   constructor(public httpClient: HttpClient) { }
 
-  public getHeaders(user: User): HttpHeaders {
-    let base64Credential: string;
-    base64Credential = btoa(unescape(encodeURIComponent(user.login + ':' + user.password)));
+  private static getHeaders(): HttpHeaders {
+
     let headers: HttpHeaders;
-    headers = new HttpHeaders().set('Authorization', 'Basic ' + base64Credential);
+    headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/json');
+    headers = headers.set('Content-Type', 'application/json');
     return headers;
   }
 
-  public logIn(user: User) {
-    return of(true)
-    // return this.httpClient.get('/api/login',
-    //   {headers: this.getHeaders(user)}).pipe( map(r=>{
-    //     if (JSON.parse(JSON.stringify(r)) != null) {
-    //       localStorage.setItem('currentUser', JSON.stringify(user));
-    //       localStorage.setItem('userHash', btoa( unescape(encodeURIComponent(user.login + ':' + user.password))));
-    //     }
-    //   })
-    // );
+
+  public logIn(user: any): Observable<any> {
+    // return of({token: 'fd', role: 'HOST'})
+    return this.httpClient.post(this.path + 'login',user,
+      {headers: UserService.getHeaders()})
   }
 
-  logOut() {
-    return this.httpClient.post('api/logout', {});
+
+  createAccount(user: any): Observable<any> {
+    // return of(true)
+    return this.httpClient.post(this.path + 'register' , user, {headers: UserService.getHeaders()});
   }
-  createAccount(user: User) {
-    return of(true)
-    // return this.httpClient.post('/api/register' , user);
+
+  createHostAccount(user: any): Observable<any> {
+    // return of(true)
+    return this.httpClient.post(this.path + 'host-register' , user, {headers: UserService.getHeaders()});
   }
 }

@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AdminService} from "../../services/admin.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {UserApiService} from "../../services/user-api.service";
+import {HostApiService} from "../../services/host-api.service";
+import {HelperService} from "../../services/utils/helper.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Task} from '../../model/task'
 
 @Component({
   selector: 'app-admin-form',
@@ -10,36 +15,33 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class AdminFormComponent implements OnInit {
 
-  showReport = false
-  tasks: Task[] = [];
-  columns = ['position', 'id', 'type', 'variables', 'buttons']
-  pageSizeOptions = [5,10,15];
-  limit = 10;
-  pageIndex = 0;
-  length = 0;
+
+  task: Task;
   isHost = false
-  constructor(private router: Router, private adminService: AdminService, private dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              public dialogRef: MatDialogRef<AdminFormComponent>,
+              public api:AdminService,
+              public helper: HelperService,
+              public snackBar: MatSnackBar) {
+    this.task = data
+  }
 
   ngOnInit(): void {
-    this.getTasks()
   }
 
-  getTasks(){
-    this.adminService.getTasks().subscribe(data=> this.tasks = data)
+  close(value?: any) {
+    if (value)
+      this.dialogRef.close(value);
+    else
+      this.dialogRef.close()
   }
 
-  logOut() {
-    localStorage.removeItem("currentUser")
-    localStorage.removeItem("isHost")
-    this.router.navigate(['/login'])
+  complete(approve: boolean){
+    this.api.complete(this.task,approve).subscribe(v=> {
+         this.snackBar.open(approve?'Approved':'Not approved','Success:', {duration:5000})
+        this.close()
+      },
+      error => this.snackBar.open(error.error,'Error:', {duration:5000}))
   }
 
-
-  toggleMode() {
-    this.showReport = !this.showReport
-  }
-
-  openTaskForm(task: Task) {
-    this.dialog.open(AdminFormComponent, {data: task})
-  }
 }

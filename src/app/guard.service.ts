@@ -18,7 +18,7 @@ export class Guard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     } else if ( isAuth && (state.url.match(/^\/(login|register|[]|[*]+)$/ig))) {
-      if (localStorage.getItem('isAdmin')=='true')
+      if (localStorage.getItem('role')=='ADMIN')
         this.router.navigate(['/admin'])
       else
         this.router.navigate(['/listings']);

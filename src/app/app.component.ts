@@ -8,7 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class AppComponent {
   public static INT_MAX=2147483647;
-  public static  LONG_MAX=9223372036854775807;
+  public static  LONG_MAX=1000000000;
   public static FLOAT_MAX=3.40282347E+38;
   public static DOUBLE_MAX=1.7976931348623157E308;
 

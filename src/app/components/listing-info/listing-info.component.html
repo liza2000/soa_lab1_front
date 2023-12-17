@@ -1,0 +1,33 @@
+<div class="listing">
+  <h1>Listing <strong> {{listing.name}}</strong></h1>
+  <p>Name: <strong>{{listing.name}}</strong></p>
+  <div class="half">
+    <p>Price: <strong>{{listing.price}}</strong></p>
+    <p>Rating <strong>{{listing.rating || 'No any reviews'}}</strong></p>
+  </div>
+  <p>Сity name: <strong>{{listing.city}}</strong></p>
+
+  <p *ngIf="weatherData">Weather in this sity on selected dates: <strong >{{weatherData}}</strong></p>
+
+  <div>Host: <br/>
+    <ul>
+  <li>Name:  <strong>{{listing.host?.name}}</strong></li>
+  <li>Email:  <strong>{{listing.host?.email}}</strong></li>
+  <li>Phone:  <strong>{{listing.host?.phone}}</strong></li>
+  <li>Rate:  <strong>{{listing.host?.hostRating}}</strong></li>
+</ul>
+  </div>
+  <br/>
+  <div>
+    <p>Reviews:</p>
+    <ul>
+
+      <li *ngFor="let rev of listing.review">
+        {{rev.reviewerName}}: {{rev.comments}}
+      </li>
+    </ul>
+  </div>
+
+  <button *ngIf="withButtons" class="open-button form-button" (click)="bookListing()">Book</button>
+  <button class="cancel-button form-button" (click)="this.close()">Cancel</button>
+</div>

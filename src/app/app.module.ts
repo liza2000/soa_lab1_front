@@ -35,6 +35,7 @@ import {Guard} from "./guard.service";
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { AdminFormComponent } from './components/admin-form/admin-form.component';
+import { ListingInfoComponent } from './components/listing-info/listing-info.component';
 
 const appRoutes: Routes = [
   {
@@ -86,7 +87,8 @@ const appRoutes: Routes = [
     RegisterComponent,
     BookingsComponent,
     AdminPageComponent,
-    AdminFormComponent
+    AdminFormComponent,
+    ListingInfoComponent
   ],
   imports: [
     BrowserModule,

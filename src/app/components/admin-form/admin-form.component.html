@@ -1,0 +1,11 @@
+<div class="task">
+  <h1>Task </h1>
+  <p>id: <strong>{{task.id}}</strong></p>
+  <p>Type: <strong>{{task.type}}</strong></p>
+  <p>CamundaId: {{task.camundaId}}</p>
+  <p> Variables: <strong >{{task.variables}}</strong></p>
+
+
+  <button  class="open-button form-button" (click)="complete(true)">Approve</button>
+  <button class="delete-button form-button" (click)="complete(false)">Not approve</button>
+</div>
