@@ -18,6 +18,10 @@ export class HelperService {
   format(date?: Date | null){
     if (date)
     return moment(date).format("DD.MM.yyyy");
-    return null
+    return ''
+  }
+
+  addDate(date: Date, count: number) {
+    return moment(date).add(count, "days").toDate()
   }
 }

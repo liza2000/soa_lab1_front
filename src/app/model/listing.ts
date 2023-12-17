@@ -5,6 +5,7 @@ export class Listing {
               public price: number,
               public rating: number,
               public city: string,
+              public info: string,
               public date: Date) {
   }
 

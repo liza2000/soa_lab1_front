@@ -1,0 +1,66 @@
+<mat-card class="top">
+  <mat-chip *ngIf="!isHost" class="open-button" (click)="openAllListings()">All listings</mat-chip>
+  <mat-chip class="get-button" (click)="logOut()">Log out</mat-chip>
+</mat-card>
+
+<div  class="container">
+  <mat-card class="table-container">
+    <table matSort (matSortChange)="setSortData($event)" mat-table [dataSource]="listings">
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columns"></tr>
+
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef class="position-column">№</th>
+        <td mat-cell *matCellDef="let i = index">
+          <div class="cell-content">{{i+1+limit*pageIndex}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th  mat-sort-header mat-header-cell *matHeaderCellDef class="name-column">Name</th>
+        <td mat-cell *matCellDef="let listing"><div class="cell-content">{{listing.name}}</div></td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef class="number-column">Price</th>
+        <td mat-cell *matCellDef="let listing">
+          <div class="cell-content">{{listing.price}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="rating">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef class="number-column">Rating</th>
+        <td mat-cell *matCellDef="let listing">
+          <div class="cell-content">{{listing.rating}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef class="date-column">Creation Date</th>
+        <td mat-cell *matCellDef="let listing">
+          <div class="cell-content">{{helper.format(listing.date)}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="city">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef class="city-column">City</th>
+        <td mat-cell *matCellDef="let listing">
+          <div class="cell-content">{{listing.city}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef class="button-column"></th>
+        <td mat-cell *matCellDef="let listing">
+          <div class="button-container cell-content">
+            <mat-chip class="open-button" (click)="openListingForm(listing)">View</mat-chip>
+            <mat-chip class="delete-button" (click)="removeBooking(listing)">Remove booking</mat-chip>
+          </div>
+        </td>
+      </ng-container>
+    </table>
+    <mat-paginator *ngIf="length>0"
+                   [length]="length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="limit"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [showFirstLastButtons]="false"
+                   (page)="setPageOptions($event)">
+
+    </mat-paginator>
+  </mat-card>
+</div>

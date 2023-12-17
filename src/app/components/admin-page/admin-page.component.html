@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="admin-page.component.less">
+<mat-card class="top">
+
+  <mat-chip  class="open-button" (click)="toggleMode()">{{showReport?'Tasks':'Report'}}</mat-chip>
+  <mat-chip class="get-button" (click)="logOut()">Log out</mat-chip>
+</mat-card>
+
+<div  class="container">
+  <mat-card *ngIf="!showReport" class="table-container">
+    <table  mat-table [dataSource]="tasks">
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columns"></tr>
+
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef class="position-column">№</th>
+        <td mat-cell *matCellDef="let i = index">
+          <div class="cell-content">{{i+1+limit*pageIndex}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="id">
+        <th   mat-header-cell *matHeaderCellDef class="name-column">Id</th>
+        <td mat-cell *matCellDef="let task"><div class="cell-content">{{task.id}}</div></td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th  mat-header-cell *matHeaderCellDef class="number-column">Type</th>
+        <td mat-cell *matCellDef="let task">
+          <div class="cell-content">{{task.type}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="variables">
+        <th  mat-header-cell *matHeaderCellDef class="number-column">Data</th>
+        <td mat-cell *matCellDef="let task">
+          <div class="cell-content">{{task}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef class="button-column"></th>
+        <td mat-cell *matCellDef="let task">
+          <div class="button-container cell-content">
+            <mat-chip class="open-button"  (click)="openTaskForm(task)">View</mat-chip>
+          </div>
+        </td>
+      </ng-container>
+    </table>
+    <mat-paginator *ngIf="length>0"
+                   [length]="length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="limit"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [showFirstLastButtons]="false"
+                   (page)="setPageOptions($event)">
+
+    </mat-paginator>
+  </mat-card>
+
+  <iframe [style.width]="'100%'"
+          [style.height]="'850px'" [style.border]="'none'"
+          [style.display]="showReport?'':'none'"
+           #reportWindow></iframe>
+  </div>

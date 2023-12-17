@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ApiService} from "../../services/api.service";
+import {UserApiService} from "../../services/user-api.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AppComponent} from "../../app.component";
 import {FormControl, Validators} from "@angular/forms";
@@ -19,7 +19,7 @@ export class ParameterFormComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data:RequestType,
               public dialogRef: MatDialogRef<ParameterFormComponent>,
               public helper: HelperService,
-              public api: ApiService,
+              public api: UserApiService,
               public snackBar: MatSnackBar) {
     if (data)
       this.request = data;

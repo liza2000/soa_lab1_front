@@ -1,24 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import { Listing, RequestType} from "../../model/listing";
-import {HelperService} from "../../services/utils/helper.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ListingFormComponent} from "../listing-form/listing-form.component";
-import {UserApiService} from "../../services/user-api.service";
-import {PageEvent} from "@angular/material/paginator";
+import { Component, OnInit } from '@angular/core';
+import {Listing, RequestType} from "../../model/listing";
 import {AppComponent} from "../../app.component";
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
-import {ParameterFormComponent} from "../parameter-form/parameter-form.component";
+import {MatDialog} from "@angular/material/dialog";
+import {HelperService} from "../../services/utils/helper.service";
+import {UserApiService} from "../../services/user-api.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
-import {SearchRequest} from "../../model/search-request";
+import {ListingFormComponent} from "../listing-form/listing-form.component";
+import {ParameterFormComponent} from "../parameter-form/parameter-form.component";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.less']
+  selector: 'app-bookings',
+  templateUrl: './bookings.component.html',
+  styleUrls: ['./bookings.component.less']
 })
+export class BookingsComponent implements OnInit {
 
-
-export class TableComponent implements OnInit {
   listings: Listing[] = [];
   columns = ['position','name', 'price','rating','city','date', 'buttons'];
   FLOAT_MAX=AppComponent.FLOAT_MAX;
@@ -28,8 +26,8 @@ export class TableComponent implements OnInit {
   priceEnd?: number;
   ratingStart?:number;
   ratingEnd?:number;
-  dateStart = new Date();
-  dateEnd = this.helper.addDate(this.dateStart, 7);
+  dateStart?:Date|null;
+  dateEnd?:Date|null;
   city?:string;
 
 
@@ -40,14 +38,15 @@ export class TableComponent implements OnInit {
   limit = 10;
   pageIndex = 0;
   length = 0;
+
   isHost = false
 
 
   constructor(public dialog: MatDialog, public helper: HelperService, public api: UserApiService, public snackBar: MatSnackBar, private router: Router) { }
 
-    ngOnInit(): void {
-     this.isHost = localStorage.getItem("isHost") == 'true'
-     this.getListings();
+  ngOnInit(): void {
+    this.isHost = localStorage.getItem("isHost") == 'true'
+    this.getListings();
   }
 
   getFilterParameter(a?: any, b?:any){
@@ -63,32 +62,32 @@ export class TableComponent implements OnInit {
   }
   getListings() {
     let  sort = this.columnsToSort.slice();
-    let data = new SearchRequest(sort.reverse(),
-        (!this.name||this.name==='')?'':this.name,
-          this.priceStart==null?-this.LONG_MAX:this.priceStart,
-        this.priceEnd==null?this.LONG_MAX:this.priceEnd,
-        this.ratingStart==null?-this.LONG_MAX:this.ratingStart,
-        this.ratingEnd==null?this.LONG_MAX:this.ratingEnd,
-         (!this.city||this.city==='')?'':this.city,
-        this.limit,
-        this.helper.format(this.dateStart),
-        this.helper.format(this.dateEnd),
-        this.pageIndex)
-    this.api.getListings(data).subscribe(v => {
-       this.listings = v.list.slice() as Listing[];
-       this.length = v.totalItems;
-       this.pageIndex = v.pageIndex;
-       this.limit = v.pageSize;
-    },
+    let data = {
+      sort: sort.reverse(),
+      name:(!this.name||this.name==='')?[]:this.name,
+      priceMin:  this.priceStart==null?-this.LONG_MAX:this.priceStart,
+      priceMax:  this.priceEnd==null?this.LONG_MAX:this.priceEnd,
+      ratingMin: this.ratingStart==null?-this.LONG_MAX:this.ratingStart,
+      ratingMax: this.ratingEnd==null?this.LONG_MAX:this.ratingEnd,
+      city: (!this.city||this.city==='')?[]:this.city,
+      limit: this.limit,
+      dateStart:this.helper.format(this.dateStart),
+      dateEnd:this.helper.format(this.dateEnd),
+      pageIndex: this.pageIndex
+    };
+    this.api.getBookedListings(data).subscribe(v => {
+        this.listings = v.list.slice() as Listing[];
+        this.length = v.totalItems;
+        this.pageIndex = v.pageIndex;
+        this.limit = v.pageSize;
+      },
       e => {
-      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
+        this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
   }
   openListingForm(listing?: Listing) {
     let data = {
       listing: listing,
-      isHost: this.isHost,
-      startDate: this.dateStart,
-      endDate: this.dateEnd
+      isHost: this.isHost
     }
     this.dialog.open(ListingFormComponent, {data: data }).afterClosed().subscribe(v => {
       if (v) this.getListings()}
@@ -144,7 +143,12 @@ export class TableComponent implements OnInit {
     this.router.navigate(['/login'])
   }
 
-  openMyBookings() {
-    this.router.navigate(['/bookings'])
+  openAllListings() {
+    this.router.navigate(['/listings'])
+  }
+
+  removeBooking(listing: Listing) {
+    this.api.removeBooking(localStorage.getItem("currentUser") || '', listing)
+      .subscribe(d=>this.getListings())
   }
 }

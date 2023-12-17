@@ -1,0 +1,28 @@
+<mat-card class="auth-card">
+  <h1> Registration </h1>
+
+  <form [formGroup]="formGroup">
+    <mat-form-field>
+      <mat-label>Login</mat-label>
+      <input matInput formControlName="login">
+      <mat-error *ngIf="loginControl.hasError('required')">Login is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+      <mat-error *ngIf="passwordControl.hasError('required')">Password is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Repeat password</mat-label>
+      <input matInput type="password" formControlName="repeatPassword">
+      <mat-error *ngIf="repeatPasswordControl.hasError('required')">Repeat password is required</mat-error>
+      <mat-error *ngIf="repeatPasswordControl.hasError('notEqual')">Value is not equals to password</mat-error>
+    </mat-form-field>
+  </form>
+
+  <button class="form-button open-button" [disabled]="!formGroup.valid" (click)="formGroup.valid && register()" >Register as client</button>
+  <button class="form-button open-button" [disabled]="!formGroup.valid" (click)="formGroup.valid && register()" >Register as host</button>
+  <button class="form-button get-button"  [routerLink]="['/login']">Log in</button>
+</mat-card>

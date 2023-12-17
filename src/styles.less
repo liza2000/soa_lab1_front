@@ -26,13 +26,13 @@ body {
   text-align: center;
   height: 30px;
   margin: 5px;
-  width: 45%;
   color: white!important;
   line-height: 28px;
    cursor: pointer;
    font-family: Roboto,Helvetica Neue,sans-serif;
    border: none;
    font-weight: 500;
+   padding: 0 15px;
 }
  form button.open-button[disabled]{
    background: lightgreen;
@@ -57,3 +57,19 @@ form button.delete-button[disabled]{
 .cancel-button {
   background: linear-gradient(#666, #888);
 }
+
+.auth-card{
+  margin: 100px auto;
+  width: 350px;
+
+  .mat-form-field{
+    width: 80%;
+  }
+
+  button{
+   min-width: 100px;
+    width: max-content;
+  }
+
+}
+

@@ -1,6 +1,8 @@
 <mat-card class="top">
 <!--  <mat-chip class="get-button" (click)="openForResult(getRequestType().GET_BY_ID)">Get by id</mat-chip>-->
-  <mat-chip class="open-button" (click)="openListingForm()">Create Listing</mat-chip>
+  <mat-chip *ngIf="isHost" class="open-button" (click)="openListingForm()">Create Listing</mat-chip>
+  <mat-chip *ngIf="!isHost" class="open-button" (click)="openMyBookings()">My bookings</mat-chip>
+  <mat-chip class="get-button" (click)="logOut()">Log out</mat-chip>
 </mat-card>
 
 <div  class="container">
@@ -39,7 +41,7 @@
       <input #startDate (focus)="startDate.blur()" matStartDate [(ngModel)]="dateStart">
       <input #endDate (focus)="endDate.blur()" matEndDate [(ngModel)]="dateEnd">
     </mat-date-range-input>
-    <mat-icon matSuffix *ngIf="dateStart||dateEnd" (click)="dateStart=null;dateEnd=null;getListings()">clear</mat-icon>
+<!--    <mat-icon matSuffix *ngIf="dateStart||dateEnd" (click)="dateStart=null;dateEnd=null;getListings()">clear</mat-icon>-->
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker (closed)="getListings()"></mat-date-range-picker>
   </mat-form-field>
@@ -92,8 +94,9 @@
      <th mat-header-cell *matHeaderCellDef class="button-column"></th>
      <td mat-cell *matCellDef="let listing">
        <div class="button-container cell-content">
-         <mat-icon  (click)="openListingForm(listing)">edit</mat-icon>
-         <mat-icon (click)="deleteListing(listing)">delete</mat-icon>
+         <mat-icon *ngIf="isHost"  (click)="openListingForm(listing)">edit</mat-icon>
+         <mat-icon *ngIf="isHost" (click)="deleteListing(listing)">delete</mat-icon>
+         <mat-chip class="open-button" *ngIf="!isHost" (click)="openListingForm(listing)">View</mat-chip>
        </div>
      </td>
    </ng-container>

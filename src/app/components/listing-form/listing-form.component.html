@@ -1,21 +1,21 @@
-<form *ngIf="!result" [formGroup]="formGroup" >
+<form *ngIf="isHost &&!result" [formGroup]="formGroup" >
   <h1> {{listing?'Update':'New'}} Listing</h1>
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input matInput [formControl]="name">
     <mat-error *ngIf="name.invalid">Name should not be empty</mat-error>
   </mat-form-field>
-  <div class="half" >
+  <div>
   <mat-form-field>
     <mat-label>Price:</mat-label>
     <input matInput type="number" [formControl]="price" >
     <mat-error *ngIf="price.hasError('required')">Please, type price with digits</mat-error>
       </mat-form-field>
     <mat-form-field>
-      <mat-label>Rating</mat-label>
-      <input matInput type="number"  [formControl]="rating">
-      <mat-error *ngIf="rating.hasError('required')">Please, type rating with digits</mat-error>
-       </mat-form-field>
+      <mat-label>Info</mat-label>
+      <input matInput  [formControl]="info">
+      <mat-error *ngIf="info.hasError('required')">Please, type listing info</mat-error>
+    </mat-form-field>
   </div>
   <mat-form-field>
     <mat-label>City name</mat-label>
@@ -29,18 +29,22 @@
   </div>
 </form>
 
-<div class="result" *ngIf="result">
-  <h1>Listing <strong> {{result?.name}}</strong> {{listing?'updates':'created'}}</h1>
-  <p>Id: <strong>{{result?.id}}</strong></p>
+<div class="result" *ngIf=" !isHost || result">
+  <h1>Listing <strong> {{result?.name}}</strong> {{listing?'updated':'created'}}</h1>
   <p>Name: <strong>{{result?.name}}</strong></p>
   <div class="half">
     <p>Price: <strong>{{result?.price}}</strong></p>
-    <p>Rating <strong>{{result?.rating}}</strong></p>
+    <p>Rating <strong>{{result?.rating || 'No any reviews'}}</strong></p>
   </div>
+  <p>Info: {{result?.info}}</p>
   <p>Сity name: <strong>{{result?.city}}</strong></p>
 
+   <p *ngIf="weatherData">Weather in this sity on selected dates: <strong >{{weatherData}}</strong></p>
+
   <p>Creation date:<strong> {{helper.format(result?.date)}}</strong></p>
-  <button class="open-button form-button" (click)="this.close(result)">Ok</button>
+  <button *ngIf="isHost" class="open-button form-button" (click)="this.close(result)">Ok</button>
+  <button *ngIf="!isHost" class="open-button form-button" (click)="bookListing()">Book</button>
+  <button *ngIf="!isHost" class="cancel-button form-button" (click)="this.close()">Cancel</button>
 </div>
 
 
