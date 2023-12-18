@@ -18,7 +18,7 @@ export class HelperService {
 
   format(date?: Date | null){
     if (date)
-    return moment(date).format("DD-MM-yyyy");
+    return moment(date).format("yyyy-MM-DD");
     return ''
   }
 

@@ -18,29 +18,7 @@ export class UserApiService {
 
   public map = new Map()
 
-  static list: Listing[] = [
-    {
-      id: 1,
-      "name": "Ромашка",
-      "price": 1500,
-      "rating": 0,
-      "city": "Москва",
-    },
-    {
-      id: 2,
-      "name": "Ласточка",
-      "price": 2000,
-      "rating": 0,
-      "city": "Санкт-Петербург",
-    },
-    {
-      id: 3,
-      "name": "Travelto",
-      "price": 1000,
-      "rating": 0,
-      "city": "Тверь",
-    }
-  ]
+
 
   private static getHeaders(): HttpHeaders {
 
@@ -54,8 +32,8 @@ export class UserApiService {
 
 
 
-  public getListings(data:  SearchRequest): Observable<Listing[]>{
-    return this.http.post<Listing[]>(this.path+'search',data,{headers: UserApiService.getHeaders()});
+  public getListings(data:  SearchRequest): Observable<any>{
+    return this.http.post<any>(this.path+'search',data,{headers: UserApiService.getHeaders()});
   }
 
   getById(id: number): Observable<ListingFull>{

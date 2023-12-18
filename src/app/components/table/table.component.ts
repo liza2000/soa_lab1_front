@@ -53,11 +53,10 @@ export class TableComponent implements OnInit {
         this.helper.format(this.dateEnd))
 
     this.api.getListings(data).subscribe(v => {
-       this.listings = v.slice() as Listing[];
+       this.listings = v.listings.slice() as Listing[];
     },
       e => {
-      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})});
-    this.listings = UserApiService.list
+      this.snackBar.open(e.error, 'Error', {duration: 5000, panelClass: 'error-snackbar'})})
   }
   openListingForm(listing?: Listing) {
       let data = {
